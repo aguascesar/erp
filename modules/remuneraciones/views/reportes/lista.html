@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Reportes - Módulo de Remuneraciones</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/public/assets/img/favicon.ico">
+
+    <!-- Font Awesome -->
+    <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap CSS 
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    -->
+
+
+    <!-- SB Admin 2 CSS -->
+    <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 
+    <link rel="stylesheet" href="/assets/vendor/sweetalert2/sweetalert2.min.css">
+    -->
+
+
+    <!-- Estilos personalizados -->
+    <link href="../../css/styles.css" rel="stylesheet">
+
+    <style>
+        .report-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #4e73df;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .report-icon {
+            font-size: 2rem;
+            color: #4e73df;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/remus/index.html">
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Remuneraciones</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Módulos
+            </div>
+
+            <!-- Nav Item - Liquidaciones -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/views/liquidaciones/lista.html">
+                    <i class="fas fa-fw fa-file-invoice-dollar"></i>
+                    <span>Liquidaciones</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Empleados -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/views/empleados/lista.html">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Empleados</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Reportes -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/remus/views/reportes/lista.html">
+                    <i class="fas fa-fw fa-chart-bar"></i>
+                    <span>Reportes</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Nav Item - Configuración -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/views/configuracion/lista.html">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600">Administrador</span>
+                                <img class="img-profile rounded-circle" src="/public/assets/assets/img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Perfil
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Configuración
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Cerrar Sesión
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Reportes</h1>
+                        <div>
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                                data-toggle="modal" data-target="#filtroModal">
+                                <i class="fas fa-filter fa-sm text-white-50"></i> Filtrar
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Reporte 1 -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2 report-card">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Liquidaciones por Período</div>
+                                            <p class="text-muted mb-0">Reporte detallado de liquidaciones por rango de
+                                                fechas.</p>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary btn-icon-split" data-toggle="modal"
+                                            data-target="#filtroLiquidaciones">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </span>
+                                            <span class="text">PDF</span>
+                                        </a>
+                                        <a href="#" class="btn btn-sm btn-success btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-excel"></i>
+                                            </span>
+                                            <span class="text">Excel</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reporte 2 -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2 report-card">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Resumen de Haberes y Descuentos</div>
+                                            <p class="text-muted mb-0">Resumen de haberes y descuentos por empleado.</p>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </span>
+                                            <span class="text">PDF</span>
+                                        </a>
+                                        <a href="#" class="btn btn-sm btn-success btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-excel"></i>
+                                            </span>
+                                            <span class="text">Excel</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reporte 3 -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2 report-card">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Boletas de Pago</div>
+                                            <p class="text-muted mb-0">Boletas de pago individuales por empleado.</p>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-file-invoice fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary btn-icon-split" data-toggle="modal"
+                                            data-target="#filtroBoletas">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </span>
+                                            <span class="text">PDF</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reporte 4 -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2 report-card">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Asistencia y Atrasos</div>
+                                            <p class="text-muted mb-0">Reporte de asistencia y atrasos por empleado.</p>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-user-clock fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </span>
+                                            <span class="text">PDF</span>
+                                        </a>
+                                        <a href="#" class="btn btn-sm btn-success btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-excel"></i>
+                                            </span>
+                                            <span class="text">Excel</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reporte 5 -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2 report-card">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                Libro de Remuneraciones</div>
+                                            <p class="text-muted mb-0">Libro completo de remuneraciones por período.</p>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-book fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </span>
+                                            <span class="text">PDF</span>
+                                        </a>
+                                        <a href="#" class="btn btn-sm btn-success btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-excel"></i>
+                                            </span>
+                                            <span class="text">Excel</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Nexus ERP 2025</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
+                    actual.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="login.html">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtro Liquidaciones Modal -->
+    <div class="modal fade" id="filtroLiquidaciones" tabindex="-1" role="dialog"
+        aria-labelledby="filtroLiquidacionesLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filtroLiquidacionesLabel">Filtrar Liquidaciones</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formFiltroLiquidaciones">
+                        <div class="form-group">
+                            <label for="fechaInicio">Fecha Inicio</label>
+                            <input type="date" class="form-control" id="fechaInicio" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaFin">Fecha Fin</label>
+                            <input type="date" class="form-control" id="fechaFin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoLiquidacion">Tipo de Liquidación</label>
+                            <select class="form-control" id="tipoLiquidacion">
+                                <option value="">Todos los tipos</option>
+                                <option value="normal">Normal</option>
+                                <option value="finiquito">Finiquito</option>
+                                <option value="bono">Bono</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="button" id="generarReporteLiquidaciones">Generar
+                        Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../../../assets/js/sb-admin-2.min.js"></script>
+
+    <!-- SweetAlert2 
+    <script src="/assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+    -->
+
+
+    <!-- Custom scripts -->
+    <script src="../../js/main.js"></script>
+    <script src="/remus/js/reportes.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Inicializar datepickers
+            var today = new Date();
+            var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            var lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+            $('#fechaInicio').val(formatDate(firstDay));
+            $('#fechaFin').val(formatDate(lastDay));
+
+            // Manejar clic en el botón de generar reporte
+            $('#generarReporteLiquidaciones').on('click', function () {
+                var fechaInicio = $('#fechaInicio').val();
+                var fechaFin = $('#fechaFin').val();
+                var tipo = $('#tipoLiquidacion').val();
+
+                // Aquí iría la lógica para generar el reporte
+                console.log('Generando reporte de liquidaciones', { fechaInicio, fechaFin, tipo });
+
+                // Simular generación de reporte
+                setTimeout(function () {
+                    $('#filtroLiquidaciones').modal('hide');
+                    Swal.fire(
+                        '¡Reporte generado!',
+                        'El reporte se ha generado correctamente.',
+                        'success'
+                    );
+                }, 1500);
+            });
+
+            // Función para formatear fecha
+            function formatDate(date) {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2)
+                    month = '0' + month;
+                if (day.length < 2)
+                    day = '0' + day;
+
+                return [year, month, day].join('-');
+            }
+        });
+    </script>
+</body>
+
+</html>

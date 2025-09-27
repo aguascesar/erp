@@ -1,0 +1,650 @@
+/*
+ * Custom Theme CSS
+ * Combina estilos de SB Admin 2 con personalizaciones
+ */
+
+/* ===== Variables CSS ===== */
+:root {
+    --primary: #4e73df;
+    --primary-dark: #2e59d9;
+    --secondary: #858796;
+    --success: #1cc88a;
+    --info: #36b9cc;
+    --warning: #f6c23e;
+    --danger: #e74a3b;
+    --light: #f8f9fc;
+    --dark: #5a5c69;
+    --white: #fff;
+
+    /* Dark Theme Colors */
+    --dark-bg: #1a1a2e;
+    --dark-bg-light: #16213e;
+    --dark-card-bg: #0f3460;
+    --dark-text: #e6e6e6;
+    --dark-border: #2a3a57;
+    --dark-hover: #2a3a57;
+    --input-bg: #1f2a40;
+    --input-border: #2a3a57;
+    --input-focus: #4e73df;
+}
+
+/* ===== Estilos base ===== */
+@import url('sb-admin-2.min.css');
+
+/* ===== Tema Oscuro ===== */
+[data-theme="dark"] {
+    --body-bg: var(--dark-bg);
+    --body-color: var(--dark-text);
+    --card-bg: var(--dark-card-bg);
+    --card-border: var(--dark-border);
+    --input-bg: var(--input-bg);
+    --input-border: var(--dark-border);
+    --input-color: var(--dark-text);
+    --table-bg: var(--dark-card-bg);
+    --table-color: var(--dark-text);
+    --table-border: var(--dark-border);
+}
+
+/* Aplicar tema oscuro al body */
+[data-theme="dark"] body {
+    background-color: var(--dark-bg) !important;
+    color: var(--dark-text) !important;
+}
+
+/* Estilos para tarjetas en tema oscuro */
+[data-theme="dark"] .card {
+    background-color: var(--dark-card-bg);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .card-header {
+    background-color: var(--dark-bg-light);
+    border-bottom-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+/* Estilos para formularios en tema oscuro */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--input-bg);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--input-focus);
+    color: var(--dark-text);
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+/* Estilos para tablas en tema oscuro */
+[data-theme="dark"] .table {
+    color: var(--dark-text);
+    background-color: var(--dark-card-bg);
+}
+
+[data-theme="dark"] .table thead th {
+    background-color: var(--dark-bg-light);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .table tbody td {
+    background-color: var(--dark-card-bg);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+    background-color: var(--dark-hover);
+}
+
+/* Estilos para DataTables en tema oscuro */
+[data-theme="dark"] .dataTables_wrapper .dataTables_length select,
+[data-theme="dark"] .dataTables_wrapper .dataTables_filter input {
+    background-color: var(--input-bg);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .dataTables_wrapper .dataTables_info {
+    color: var(--dark-text) !important;
+}
+
+[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: var(--dark-text) !important;
+}
+
+[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--primary) !important;
+    color: white !important;
+    border-color: var(--primary) !important;
+}
+
+/* Estilos para la barra lateral en tema oscuro */
+[data-theme="dark"] .sidebar {
+    background-color: var(--dark-bg-light);
+}
+
+[data-theme="dark"] .sidebar .nav-item .nav-link {
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .sidebar .nav-item .nav-link:hover {
+    background-color: var(--dark-hover);
+}
+
+[data-theme="dark"] .sidebar .nav-item.active .nav-link {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Estilos para la barra superior en tema oscuro */
+[data-theme="dark"] .topbar {
+    background-color: var(--dark-bg-light);
+    border-bottom: 1px solid var(--dark-border);
+}
+
+[data-theme="dark"] .topbar .navbar-nav .nav-item .nav-link {
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .topbar .navbar-nav .nav-item .nav-link:hover {
+    color: var(--primary);
+}
+
+/* Estilos para el dropdown del usuario en tema oscuro */
+[data-theme="dark"] .dropdown-menu {
+    background-color: var(--dark-card-bg);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: var(--dark-hover);
+    color: var(--dark-text);
+}
+
+/* Estilos para el footer en tema oscuro */
+[data-theme="dark"] footer.sticky-footer {
+    background-color: var(--dark-bg-light);
+}
+
+[data-theme="dark"] footer.sticky-footer .copyright {
+    color: var(--dark-text);
+}
+
+/* Estilos para avatares de usuario */
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.user-avatar.large {
+    width: 120px;
+    height: 120px;
+    border: 3px solid #e3eaef;
+    cursor: pointer;
+}
+
+.user-avatar-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedores de formulario */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilos para productos */
+.banderas-container {
+    margin-top: 15px;
+}
+
+.bandera-item {
+    margin-bottom: 5px;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .topbar .navbar-nav .nav-item .nav-link {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .topbar .dropdown-menu {
+        position: absolute;
+        right: 0;
+        left: auto;
+    }
+}
+
+/* Ajustes para el contenedor principal */
+[data-theme="dark"] #content {
+    background-color: var(--dark-bg);
+    min-height: calc(100vh - 56px);
+    padding-bottom: 2rem;
+}
+
+[data-theme="dark"] .container-fluid {
+    padding: 1.5rem;
+}
+
+/* Ajustes para el título de la página */
+[data-theme="dark"] .page-title {
+    color: var(--dark-text);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Ajustes para las tarjetas */
+[data-theme="dark"] .card {
+    background-color: var(--dark-card-bg);
+    border: 1px solid var(--dark-card-border);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .card-header {
+    background-color: var(--dark-card-bg);
+    border-bottom: 1px solid var(--dark-card-border);
+    padding: 1rem 1.25rem;
+}
+
+[data-theme="dark"] .card-header h6 {
+    color: var(--dark-text);
+    font-weight: 600;
+    margin: 0;
+}
+
+[data-theme="dark"] .card-body {
+    color: var(--dark-text);
+    padding: 1.25rem;
+}
+
+/* Ajustes para los botones */
+[data-theme="dark"] .btn {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    transition: all 0.3s;
+}
+
+[data-theme="dark"] .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+[data-theme="dark"] .btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+/* Estilos específicos para la tabla de clientes en tema oscuro */
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_filter input {
+    background-color: var(--dark-input-bg);
+    border: 1px solid var(--dark-input-border);
+    color: var(--dark-input-text);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_length select {
+    background-color: var(--dark-input-bg);
+    border: 1px solid var(--dark-input-border);
+    color: var(--dark-input-text);
+    padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_info {
+    color: var(--dark-text-muted) !important;
+}
+
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_paginate .paginate_button {
+    color: var(--dark-text) !important;
+    background: var(--dark-bg-light);
+    border: 1px solid var(--dark-border);
+    margin-left: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_paginate .paginate_button.current,
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: var(--primary) !important;
+    color: #fff !important;
+    border: 1px solid var(--primary) !important;
+}
+
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_paginate .paginate_button:hover {
+    background: var(--dark-hover) !important;
+    color: #fff !important;
+    border: 1px solid var(--dark-border) !important;
+}
+
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_paginate .paginate_button.disabled,
+[data-theme="dark"] #tablaClientes_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+    color: var(--dark-text-muted) !important;
+    background: var(--dark-bg-light);
+    border: 1px solid var(--dark-border);
+}
+
+/* Mejoras para los botones de acción en la tabla */
+[data-theme="dark"] .btn-sm {
+    margin: 0 2px;
+}
+
+[data-theme="dark"] .btn-actions .btn {
+    margin: 0 2px;
+}
+
+/* Mejoras para los tooltips en tema oscuro */
+[data-theme="dark"] .tooltip-inner {
+    background-color: var(--dark-bg-light);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+[data-theme="dark"] .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before,
+[data-theme="dark"] .bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: var(--dark-bg-light);
+}
+
+[data-theme="dark"] .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow::before,
+[data-theme="dark"] .bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: var(--dark-bg-light);
+}
+
+[data-theme="dark"] .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before,
+[data-theme="dark"] .bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: var(--dark-bg-light);
+}
+
+[data-theme="dark"] .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow::before,
+[data-theme="dark"] .bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: var(--dark-bg-light);
+}
+
+/* Mejoras para los dropdowns en la tabla */
+[data-theme="dark"] .dropdown-item {
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+    background-color: var(--dark-hover);
+    color: #fff;
+}
+
+[data-theme="dark"] .dropdown-divider {
+    border-top: 1px solid var(--dark-border);
+}
+
+/* Mejoras para los botones de acción en la tabla */
+[data-theme="dark"] .btn-action {
+    color: var(--dark-text);
+    background-color: transparent;
+    border: 1px solid var(--dark-border);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    transition: all 0.2s;
+}
+
+[data-theme="dark"] .btn-action:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .btn-action i {
+    margin-right: 0.25rem;
+}
+
+/* Mejoras para los badges en la tabla */
+[data-theme="dark"] .badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+}
+
+[data-theme="dark"] .badge.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+[data-theme="dark"] .badge.bg-success {
+    background-color: #48bb78 !important;
+}
+
+[data-theme="dark"] .badge.bg-warning {
+    background-color: #ed8936 !important;
+    color: #1a202c !important;
+}
+
+[data-theme="dark"] .badge.bg-danger {
+    background-color: #f56565 !important;
+}
+
+[data-theme="dark"] .badge.bg-info {
+    background-color: var(--primary) !important;
+}
+
+[data-theme="dark"] .badge.bg-secondary {
+    background-color: #718096 !important;
+}
+
+/* Mejoras para los tooltips en botones de acción */
+[data-theme="dark"] [data-bs-toggle="tooltip"] {
+    cursor: pointer;
+}
+
+/* Asegurar que los iconos en botones sean visibles */
+[data-theme="dark"] .btn i {
+    color: inherit;
+}
+
+/* ===== Estilos para el formulario de inicio de sesión ===== */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df 10%, #224abe 100%) !important;
+}
+
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 2.5rem;
+}
+
+.form-control-user {
+    font-size: 1.2rem !important;
+    padding: 1rem 1.25rem !important;
+    border-radius: 2rem !important;
+    height: auto !important;
+    line-height: 1.5 !important;
+}
+
+.btn-user {
+    font-size: 1rem !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 2rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Asegurar que las etiquetas sean más visibles */
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #4e73df;
+}
+
+/* Mejorar visibilidad del placeholder */
+.form-control-user::placeholder {
+    color: #a7a9c0 !important;
+    opacity: 1;
+    font-size: 0.95rem;
+}
+
+/* Estilos para el checkbox de recordar */
+.custom-control-label {
+    font-size: 0.9rem !important;
+    padding-left: 0.5rem;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+/* Estilos para enlaces */
+.small {
+    font-size: 0.9rem !important;
+}
+
+/* Estilos para el mensaje de error */
+.alert {
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .form-control-user {
+        font-size: 1.1rem !important;
+        padding: 0.85rem 1.15rem !important;
+    }
+
+    .btn-user {
+        font-size: 0.95rem !important;
+        padding: 0.7rem 1.25rem !important;
+    }
+}
+
+/* ===== Mejoras de legibilidad para formularios ===== */
+/* Aumentar tamaño de fuente en campos de formulario */
+.form-control,
+.form-select,
+.input-group-text,
+.form-check-input,
+.form-check-label {
+    font-size: 1.05rem; /* Aumentar tamaño base de fuente */
+    line-height: 1.5;
+}
+
+/* Asegurar que los placeholders sean legibles */
+.form-control::placeholder {
+    font-size: 1rem;
+    opacity: 0.8;
+    color: var(--text-muted);
+}
+
+/* Mejorar el contraste en campos de formulario */
+.form-control,
+.form-select {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: #f8f9fa;
+}
+
+/* Efecto hover y focus mejorado */
+.form-control:hover,
+.form-select:hover {
+    border-color: #6c757d;
+    background-color: var(--input-bg);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+    background-color: var(--input-bg);
+    color: #fff;
+}
+
+/* Ajustes específicos para el formulario de registro */
+#registerForm .form-control {
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+}
+
+#registerForm label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #e9ecef;
+    font-weight: 500;
+}
+
+/* Ajustar tamaño de los botones para mantener proporción */
+.btn {
+    font-size: 1.05rem;
+    padding: 0.6rem 1.25rem;
+}
+
+/* Ajustar tamaño de los iconos en los botones */
+.btn i {
+    font-size: 1.1em;
+    margin-right: 0.35rem;
+}
+
+/* Asegurar que las alertas también tengan buen tamaño de fuente */
+.alert {
+    font-size: 1.05rem;
+    padding: 1rem 1.25rem;
+}
+
+/* Ajustar el tamaño de los enlaces */
+.small, small {
+    font-size: 0.95rem !important;
+}
+
+a {
+    font-size: 1rem;
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 768px) {
+    .form-control,
+    .form-select,
+    .btn {
+        font-size: 1.1rem;
+        padding: 0.75rem 1rem;
+    }
+
+    #registerForm .form-control {
+        font-size: 1.15rem;
+        padding: 0.85rem 1.1rem;
+    }
+}

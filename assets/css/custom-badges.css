@@ -1,0 +1,650 @@
+/* Estilos globales para badges en la aplicación */
+
+/* Badges generales */
+.badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4em 0.8em;
+    border-radius: 0.25rem;
+    text-transform: capitalize;
+}
+
+/* Badges de estado */
+.badge-success,
+.badge-secondary,
+.badge-warning,
+.badge-danger,
+.badge-info,
+.badge-primary {
+    color: white !important;
+}
+
+/* Badges de roles específicos */
+.badge-admin {
+    background-color: #4e73df;
+    color: white !important;
+}
+
+.badge-user {
+    background-color: #1cc88a;
+    color: white !important;
+}
+
+/* Badges de estado mejorados */
+.badge-success {
+    background-color: #1cc88a;
+}
+
+.badge-warning {
+    background-color: #f6c23e;
+    color: #1a1a1a !important;
+}
+
+.badge-danger {
+    background-color: #e74a3b;
+}
+
+.badge-info {
+    background-color: #36b9cc;
+}
+
+.badge-primary {
+    background-color: #4e73df;
+}
+
+.badge-secondary {
+    background-color: #858796;
+}
+
+/* Tamaños adicionales */
+.badge-sm {
+    font-size: 0.75rem;
+    padding: 0.25em 0.6em;
+}
+
+.badge-lg {
+    font-size: 1rem;
+    padding: 0.5em 1em;
+}
+
+/* Estilos para badges en tablas */
+.table .badge {
+    white-space: nowrap;
+}
+
+/* Efecto hover para badges interactivos */
+.badge-hover:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+/* Badges con iconos */
+.badge-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.badge-icon i {
+    font-size: 0.9em;
+}
+
+/* Estilos para el tema oscuro */
+html[data-theme="dark"] {
+    --dark-bg: #1a1a1a;
+    --dark-card: #2d2d2d;
+    --dark-text: #e0e0e0;
+    --dark-border: #444;
+    --dark-header: #252525;
+    --sidebar-bg: #1e1e2d;
+    --sidebar-hover: #2b2b40;
+    --topbar-bg: #1e1e2d;
+}
+
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+    background-color: var(--dark-bg) !important;
+    color: var(--dark-text) !important;
+}
+
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .dropdown-menu {
+    background-color: var(--dark-card) !important;
+    color: var(--dark-text) !important;
+    border-color: var(--dark-border) !important;
+}
+
+html[data-theme="dark"] .card-header,
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer {
+    background-color: var(--dark-header) !important;
+    border-color: var(--dark-border) !important;
+}
+
+html[data-theme="dark"] .text-gray-800,
+html[data-theme="dark"] .h3,
+html[data-theme="dark"] .h6,
+html[data-theme="dark"] .text-primary,
+html[data-theme="dark"] .text-dark {
+    color: var(--dark-text) !important;
+}
+
+html[data-theme="dark"] .text-gray-500,
+html[data-theme="dark"] .text-muted {
+    color: #a0a0a0 !important;
+}
+
+html[data-theme="dark"] .bg-light {
+    background-color: #333 !important;
+}
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-control:focus {
+    background-color: #333;
+    border-color: #555;
+    color: #fff;
+}
+
+/* Estilos para el panel lateral */
+html[data-theme="dark"] .sidebar {
+    background-color: var(--sidebar-bg) !important;
+}
+
+html[data-theme="dark"] .sidebar .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: all 0.3s ease;
+}
+
+html[data-theme="dark"] .sidebar .nav-item .nav-link:hover,
+html[data-theme="dark"] .sidebar .nav-item.active .nav-link {
+    color: #fff !important;
+    background-color: var(--sidebar-hover) !important;
+}
+
+html[data-theme="dark"] .sidebar .nav-item.active .nav-link {
+    font-weight: 600;
+}
+
+/* Estilos para la barra superior */
+html[data-theme="dark"] .topbar {
+    background-color: var(--topbar-bg) !important;
+    border-bottom: 1px solid var(--dark-border) !important;
+}
+
+html[data-theme="dark"] .topbar .navbar-search input {
+    background-color: #2b2b40;
+    border-color: #2b2b40;
+    color: #fff;
+}
+
+html[data-theme="dark"] .topbar .navbar-search .btn {
+    background-color: #2b2b40;
+    border-color: #2b2b40;
+    color: #fff;
+}
+
+/* Estilos para el contenido principal */
+html[data-theme="dark"] #content-wrapper {
+    background-color: #151521 !important;
+}
+
+html[data-theme="dark"] .bg-gradient-primary {
+    background: linear-gradient(180deg, var(--sidebar-bg) 0%, #1a1a2e 100%) !important;
+}
+
+/* Estilos para el contenedor principal */
+html[data-theme="dark"] .container-fluid {
+    background-color: #151521;
+    color: var(--dark-text);
+}
+
+/* Estilos para los títulos y encabezados */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6 {
+    color: #fff !important;
+}
+
+/* Estilos para los textos en el contenido */
+html[data-theme="dark"] .text-gray-800,
+html[data-theme="dark"] .text-gray-700,
+html[data-theme="dark"] .text-gray-600 {
+    color: #e0e0e0 !important;
+}
+
+/* Estilos para los badges */
+html[data-theme="dark"] .badge {
+    color: #fff !important;
+}
+
+/* Estilos para el footer */
+html[data-theme="dark"] .sticky-footer {
+    background-color: var(--sidebar-bg) !important;
+    border-top: 1px solid var(--dark-border);
+}
+
+/* Estilos para los enlaces */
+html[data-theme="dark"] a:not(.btn) {
+    color: #4e9fef;
+}
+
+html[data-theme="dark"] a:not(.btn):hover {
+    color: #6fb1f0;
+    text-decoration: none;
+}
+
+/* Estilos para los botones */
+html[data-theme="dark"] .btn-light {
+    background-color: #2b2b40;
+    border-color: #2b2b40;
+    color: #fff;
+}
+
+html[data-theme="dark"] .btn-light:hover {
+    background-color: #36364f;
+    border-color: #36364f;
+    color: #fff;
+}
+
+/* Estilos para los inputs y formularios */
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-control:focus {
+    background-color: #2b2b40;
+    border-color: #2b2b40;
+    color: #fff;
+}
+
+html[data-theme="dark"] .form-control:focus {
+    border-color: #4e9fef;
+    box-shadow: 0 0 0 0.2rem rgba(78, 159, 239, 0.25);
+}
+
+/* Estilos para las tablas */
+html[data-theme="dark"] .table {
+    color: #e0e0e0;
+    background-color: var(--dark-card);
+}
+
+html[data-theme="dark"] .table thead th {
+    border-bottom-color: #444;
+    color: #fff;
+}
+
+html[data-theme="dark"] .table td,
+html[data-theme="dark"] .table th {
+    border-top-color: #444;
+}
+
+/* Estilos para las tarjetas de resumen */
+html[data-theme="dark"] .card-header {
+    background-color: #2b2b40 !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+html[data-theme="dark"] .card-body {
+    background-color: #2d2d2d !important;
+}
+
+/* Estilos para los badges en las tablas */
+html[data-theme="dark"] .badge-success {
+    background-color: #1cc88a !important;
+    color: #fff !important;
+}
+
+html[data-theme="dark"] .badge-warning {
+    background-color: #f6c23e !important;
+    color: #000 !important;
+}
+
+html[data-theme="dark"] .badge-danger {
+    background-color: #e74a3b !important;
+    color: #fff !important;
+}
+
+/* Estilos para los formularios */
+html[data-theme="dark"] .form-label {
+    color: #e0e0e0 !important;
+}
+
+html[data-theme="dark"] .form-text {
+    color: #a0a0a0 !important;
+}
+
+/* Estilos para los modales */
+html[data-theme="dark"] .modal-content {
+    background-color: #2d2d2d !important;
+    border: 1px solid #444 !important;
+}
+
+html[data-theme="dark"] .modal-header {
+    border-bottom: 1px solid #444 !important;
+}
+
+html[data-theme="dark"] .modal-footer {
+    border-top: 1px solid #444 !important;
+}
+
+/* Estilos para los botones de acción */
+html[data-theme="dark"] .btn-actions .btn {
+    margin: 0 2px;
+}
+
+/* Estilos para la paginación */
+html[data-theme="dark"] .page-item .page-link {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+html[data-theme="dark"] .page-item.disabled .page-link {
+    background-color: #2d2d2d;
+    color: #6c757d;
+}
+
+/* Estilos para las tarjetas de estadísticas */
+html[data-theme="dark"] .card-stats {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+html[data-theme="dark"] .card-stats:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Estilos para los tooltips */
+html[data-theme="dark"] .tooltip-inner {
+    background-color: #2b2b40;
+    color: #fff;
+}
+
+html[data-theme="dark"] .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before,
+html[data-theme="dark"] .bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #2b2b40;
+}
+
+/* Estilos para las alertas */
+html[data-theme="dark"] .alert {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .alert-success {
+    border-left: 4px solid #1cc88a;
+}
+
+html[data-theme="dark"] .alert-warning {
+    border-left: 4px solid #f6c23e;
+}
+
+html[data-theme="dark"] .alert-danger {
+    border-left: 4px solid #e74a3b;
+}
+
+/* Estilos para los dropdowns */
+html[data-theme="dark"] .dropdown-menu {
+    background-color: #2d2d2d;
+    border: 1px solid #444;
+}
+
+html[data-theme="dark"] .dropdown-item {
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .dropdown-item:hover {
+    background-color: #3a3a4a;
+    color: #fff;
+}
+
+/* Estilos para los tabs */
+html[data-theme="dark"] .nav-tabs .nav-link {
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .nav-tabs .nav-link.active {
+    background-color: #2d2d2d;
+    border-color: #444 #444 #2d2d2d;
+    color: #4e9fef;
+}
+
+/* Estilos para los checkboxes personalizados */
+html[data-theme="dark"] .form-check-input:checked {
+    background-color: #4e9fef;
+    border-color: #4e9fef;
+}
+
+/* Estilos para los selects personalizados */
+html[data-theme="dark"] .form-select {
+    background-color: #2b2b40;
+    border-color: #444;
+    color: #fff;
+}
+
+html[data-theme="dark"] .form-select:focus {
+    border-color: #4e9fef;
+    box-shadow: 0 0 0 0.2rem rgba(78, 159, 239, 0.25);
+}
+
+/* Mejoras para las tarjetas */
+html[data-theme="dark"] .card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Mejoras para los bordes de las tarjetas */
+html[data-theme="dark"] .border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+html[data-theme="dark"] .border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+html[data-theme="dark"] .border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+html[data-theme="dark"] .border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+/* Estilos personalizados para la barra de desplazamiento */
+html[data-theme="dark"] ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #1e1e2d;
+    border-radius: 6px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background-color: #4a4a5a;
+    border-radius: 6px;
+    border: 3px solid #1e1e2d;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background-color: #5a5a6a;
+}
+
+/* Para Firefox */
+html[data-theme="dark"] {
+    scrollbar-width: thin;
+    scrollbar-color: #4a4a5a #1e1e2d;
+}
+
+/* Para navegadores basados en WebKit (Chrome, Edge, Safari) */
+html[data-theme="dark"] {
+    scrollbar-width: thin;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar {
+    width: 10px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #1e1e2d;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background-color: #4a4a5a;
+    border-radius: 10px;
+    border: 2px solid #1e1e2d;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background-color: #5a5a6a;
+}
+
+html[data-theme="dark"] .dropdown-menu {
+    background-color: #2d2d2d !important;
+    border-color: #444 !important;
+}
+
+html[data-theme="dark"] .dropdown-item {
+    color: #e0e0e0 !important;
+}
+
+html[data-theme="dark"] .dropdown-item:hover {
+    background-color: #3a3a3a !important;
+    color: #fff !important;
+}
+
+html[data-theme="dark"] .dropdown-divider {
+    border-top-color: #444 !important;
+}
+
+html[data-theme="dark"] .table {
+    color: #e0e0e0 !important;
+}
+
+html[data-theme="dark"] .table th,
+html[data-theme="dark"] .table td {
+    border-top-color: #444 !important;
+}
+
+html[data-theme="dark"] .table thead th {
+    border-bottom-color: #444 !important;
+}
+
+html[data-theme="dark"] .page-item.disabled .page-link {
+    background-color: #2d2d2d !important;
+    border-color: #444 !important;
+    color: #6c757d !important;
+}
+
+html[data-theme="dark"] .page-link {
+    background-color: #2d2d2d !important;
+    border-color: #444 !important;
+    color: #e0e0e0 !important;
+}
+
+html[data-theme="dark"] .page-link:hover {
+    background-color: #3a3a3a !important;
+    border-color: #444 !important;
+    color: #fff !important;
+}
+
+[data-theme="dark"] .text-gray-800,
+[data-theme="dark"] .h3,
+[data-theme="dark"] .h6,
+[data-theme="dark"] .text-primary {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .text-gray-500 {
+    color: #a0a0a0 !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: #333 !important;
+}
+
+[data-theme="dark"] .form-control {
+    background-color: #333;
+    border-color: #444;
+    color: #fff;
+}
+
+[data-theme="dark"] .form-control:focus {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+[data-theme="dark"] .sidebar {
+    background-color: #252525 !important;
+}
+
+[data-theme="dark"] .sidebar .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .sidebar .nav-item .nav-link:hover {
+    color: #fff;
+}
+
+[data-theme="dark"] .sidebar .nav-item.active .nav-link {
+    color: #fff;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: #2d2d2d;
+    border-color: #444;
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+[data-theme="dark"] .dropdown-divider {
+    border-top-color: #444;
+}
+
+[data-theme="dark"] .table {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .table th,
+[data-theme="dark"] .table td {
+    border-top-color: #444;
+}
+
+[data-theme="dark"] .table thead th {
+    border-bottom-color: #444;
+}
+
+[data-theme="dark"] .page-item.disabled .page-link {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #6c757d;
+}
+
+[data-theme="dark"] .page-link {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .page-link:hover {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #fff;
+}

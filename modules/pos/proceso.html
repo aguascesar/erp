@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesar Venta - Punto de Venta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/pos.css">
+</head>
+<body class="proceso-body">
+    <div class="proceso-container">
+        <header class="proceso-header">
+            <h1>Procesar Venta</h1>
+            <button id="volverAlPos" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver al Punto de Venta
+            </button>
+        </header>
+
+        <div class="proceso-content">
+            <!-- Sección de Tipo de Documento -->
+            <div class="documento-section">
+                <h2>Tipo de Documento</h2>
+                <select id="tipoDocumento" class="form-control">
+                    <option value="boleta">Boleta Electrónica</option>
+                    <option value="factura">Factura Electrónica</option>
+                    <option value="factura_exenta">Factura Exenta Electrónica</option>
+                </select>
+            </div>
+
+            <!-- Sección de Datos del Cliente (inicialmente oculta) -->
+            <div id="datosCliente" class="datos-cliente" style="display: none;">
+                <h2>Datos del Cliente</h2>
+                <div class="form-group">
+                    <label for="rutCliente">RUT</label>
+                    <input type="text" id="rutCliente" class="form-control" placeholder="12.345.678-9" oninput="formatearRut(this)">
+                </div>
+                <div class="form-group">
+                    <label for="nombreCliente">Nombre o Razón Social</label>
+                    <input type="text" id="nombreCliente" class="form-control" placeholder="Nombre del Cliente">
+                </div>
+                <div class="form-group">
+                    <label for="giroCliente">Giro</label>
+                    <input type="text" id="giroCliente" class="form-control" placeholder="Giro del Cliente">
+                </div>
+                <div class="form-group">
+                    <label for="direccionCliente">Dirección</label>
+                    <input type="text" id="direccionCliente" class="form-control" placeholder="Dirección del Cliente">
+                </div>
+                <div class="form-group">
+                    <label for="comunaCliente">Comuna</label>
+                    <input type="text" id="comunaCliente" class="form-control" placeholder="Comuna del Cliente">
+                </div>
+                <div class="form-group">
+                    <label for="ciudadCliente">Ciudad</label>
+                    <input type="text" id="ciudadCliente" class="form-control" placeholder="Ciudad del Cliente">
+                </div>
+            </div>
+
+            <!-- Sección de Método de Pago -->
+            <div class="metodos-pago-section">
+                <h2>Método de Pago</h2>
+                <div class="metodos-pago">
+                    <button class="metodo-pago" data-metodo="efectivo">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Efectivo</span>
+                    </button>
+                    <button class="metodo-pago" data-metodo="debito">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Débito</span>
+                    </button>
+                    <button class="metodo-pago" data-metodo="credito">
+                        <i class="far fa-credit-card"></i>
+                        <span>Crédito</span>
+                    </button>
+                    <button class="metodo-pago" data-metodo="transferencia">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transferencia</span>
+                    </button>
+                    <button class="metodo-pago" data-metodo="cheque">
+                        <i class="fas fa-money-check"></i>
+                        <span>Cheque</span>
+                    </button>
+                    <button class="metodo-pago" data-metodo="valevista">
+                        <i class="fas fa-receipt"></i>
+                        <span>Vale Vista</span>
+                    </button>
+                </div>
+                
+                <div class="monto-pago">
+                    <label for="montoRecibido">Monto Recibido (CLP$):</label>
+                    <input type="number" id="montoRecibido" min="0" step="1" oninput="this.value = Math.max(0, parseInt(this.value) || 0)">
+                    <p id="cambio" class="text-right">Cambio: CLP$ 0</p>
+                </div>
+            </div>
+
+            <!-- Resumen de la Venta -->
+            <div class="resumen-venta">
+                <h2>Resumen de la Venta</h2>
+                <div class="resumen-detalle">
+                    <div class="resumen-item">
+                        <span>Subtotal:</span>
+                        <span id="resumen-subtotal">CLP$ 0</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span id="iva-label">IVA (19%):</span>
+                        <span id="resumen-iva">CLP$ 0</span>
+                    </div>
+                    <div class="resumen-total">
+                        <strong>Total:</strong>
+                        <strong id="resumen-total">CLP$ 0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="proceso-actions">
+                <button id="cancelarPago" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar Venta
+                </button>
+                <button id="confirmarPago" class="btn btn-primary" disabled>
+                    <i class="fas fa-check"></i> Confirmar Venta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>¡Venta Exitosa! <i class="fas fa-check-circle text-success"></i></h2>
+            </div>
+            <div class="modal-body">
+                <p>La venta se ha procesado correctamente.</p>
+                <div class="comprobante-options">
+                    <h4>Opciones de comprobante:</h4>
+                    <button id="imprimirComprobante" class="btn btn-primary">
+                        <i class="fas fa-print"></i> Imprimir Comprobante
+                    </button>
+                    <button id="enviarPorEmail" class="btn btn-secondary">
+                        <i class="fas fa-envelope"></i> Enviar por Correo
+                    </button>
+                    <div id="emailForm" style="display: none; margin-top: 15px;">
+                        <div class="form-group">
+                            <label for="emailCliente">Correo electrónico:</label>
+                            <input type="email" id="emailCliente" class="form-control" placeholder="correo@ejemplo.com">
+                        </div>
+                        <button id="confirmarEnvioEmail" class="btn btn-success">
+                            <i class="fas fa-paper-plane"></i> Enviar
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-actions" style="margin-top: 20px;">
+                    <button id="nuevaVentaBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nueva Venta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notificaciones" class="notificaciones"></div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/pos-proceso.js"></script>
+</body>
+</html>

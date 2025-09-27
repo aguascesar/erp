@@ -1,0 +1,136 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradiente para la barra -->
+        <linearGradient id="barGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c0c0c0"/>
+            <stop offset="100%" stop-color="#a0a0a0"/>
+        </linearGradient>
+        
+        <!-- Gradiente para los discos -->
+        <radialGradient id="diskGradient" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+            <stop offset="0%" stop-color="#808080"/>
+            <stop offset="100%" stop-color="#606060"/>
+        </radialGradient>
+        
+        <!-- Efecto de sombra -->
+        <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+            <feOffset dx="2" dy="2" result="offsetblur"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.2"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        
+        <!-- Patrón de hojas de laurel más grandes -->
+        <path id="laurelLeaf" d="M0,0 C8,-8 16,-3 16,8 C16,19 0,24 0,24 C0,24 -16,19 -16,8 C-16,-3 -8,-8 0,0 Z" 
+              fill="#2e8b57" stroke="#1e5c37" stroke-width="0.3"/>
+              
+        <!-- Textura de madera para el molino -->
+        <pattern id="woodTexture" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="20" stroke="#8B4513" stroke-width="1" opacity="0.3"/>
+        </pattern>
+    </defs>
+
+    <!-- Círculo exterior transparente con borde -->
+    <circle cx="100" cy="100" r="95" fill="none" stroke="#8b7500" stroke-width="1" stroke-dasharray="5,5" opacity="0.7"/>
+    
+    <!-- Patrón de hojas de laurel más grandes alrededor del círculo -->
+    <g transform="translate(100, 100)">
+        <g transform="rotate(0)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+        <g transform="rotate(45)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+        <g transform="rotate(90)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+        <g transform="rotate(135)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+        <g transform="rotate(180)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+        <g transform="rotate(225)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+        <g transform="rotate(270)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+        <g transform="rotate(315)">
+            <use href="#laurelLeaf" transform="translate(85, 0) rotate(90) scale(1.2)" />
+            <use href="#laurelLeaf" transform="translate(92, 0) rotate(90) scale(1.0)" />
+        </g>
+    </g>
+
+    <!-- Molino de viento estilo Quijote -->
+    <g transform="translate(100, 60)">
+        <!-- Estructura del molino -->
+        <rect x="-4" y="0" width="8" height="50" fill="#8B4513" filter="url(#dropShadow)" />
+        <rect x="-25" y="45" width="50" height="5" fill="#8B4513" rx="2" />
+        
+        <!-- Tejado cónico -->
+        <path d="M-25,45 L0,20 L25,45 Z" fill="#A0522D" />
+        
+        <!-- Ventanas -->
+        <rect x="-5" y="30" width="10" height="10" rx="2" fill="#87CEEB" stroke="#000" stroke-width="0.5" />
+        <rect x="-10" y="35" width="5" height="5" rx="1" fill="#87CEEB" stroke="#000" stroke-width="0.5" />
+        <rect x="5" y="35" width="5" height="5" rx="1" fill="#87CEEB" stroke="#000" stroke-width="0.5" />
+        
+        <!-- Aspas del molino -->
+        <g transform="rotate(45)">
+            <rect x="-2" y="-50" width="4" height="60" rx="2" fill="#8B4513" transform="rotate(0)" />
+            <rect x="-2" y="-50" width="4" height="60" rx="2" fill="#8B4513" transform="rotate(90)" />
+            <rect x="-2" y="-50" width="4" height="60" rx="2" fill="#8B4513" transform="rotate(180)" />
+            <rect x="-2" y="-50" width="4" height="60" rx="2" fill="#8B4513" transform="rotate(270)" />
+            
+            <!-- Lona de las aspas -->
+            <path d="M0,-50 L20,-30 L20,-10 Z" fill="#D2691E" transform="rotate(0)" />
+            <path d="M0,-50 L20,-30 L20,-10 Z" fill="#A0522D" transform="rotate(90)" />
+            <path d="M0,-50 L20,-30 L20,-10 Z" fill="#D2691E" transform="rotate(180)" />
+            <path d="M0,-50 L20,-30 L20,-10 Z" fill="#A0522D" transform="rotate(270)" />
+        </g>
+    </g>
+
+    <!-- Barra horizontal de la pesa -->
+    <rect x="50" y="120" width="100" height="20" rx="5" fill="url(#barGradient)" filter="url(#dropShadow)" />
+    
+    <!-- Barra vertical -->
+    <rect x="95" y="80" width="10" height="40" rx="2" fill="url(#barGradient)" filter="url(#dropShadow)" />
+    
+    <!-- Disco superior -->
+    <g transform="translate(100, 80)">
+        <circle cx="0" cy="0" r="20" fill="url(#diskGradient)" filter="url(#dropShadow)" />
+        <circle cx="0" cy="0" r="17" fill="none" stroke="#a0a0a0" stroke-width="0.5" />
+        <circle cx="0" cy="0" r="14" fill="none" stroke="#a0a0a0" stroke-width="0.5" />
+    </g>
+    
+    <!-- Disco izquierdo -->
+    <g transform="translate(50, 140)">
+        <circle cx="0" cy="0" r="15" fill="url(#diskGradient)" filter="url(#dropShadow)" />
+        <circle cx="0" cy="0" r="13" fill="none" stroke="#a0a0a0" stroke-width="0.5" />
+    </g>
+    
+    <!-- Disco derecho -->
+    <g transform="translate(150, 140)">
+        <circle cx="0" cy="0" r="15" fill="url(#diskGradient)" filter="url(#dropShadow)" />
+        <circle cx="0" cy="0" r="13" fill="none" stroke="#a0a0a0" stroke-width="0.5" />
+    </g>
+    
+    <!-- Agujero central -->
+    <circle cx="100" cy="80" r="5" fill="#202020" />
+    
+    <!-- Texto decorativo -->
+    <text x="100" y="180" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#8b7500" font-style="italic">MOLINOS DE VIENTO</text>
+</svg>

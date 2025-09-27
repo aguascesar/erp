@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradientes mejorados -->
+        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f8f9fa" />
+            <stop offset="100%" stop-color="#e9ecef" />
+        </linearGradient>
+        
+        <linearGradient id="skinGradient" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stop-color="#FFDBB4" />
+            <stop offset="100%" stop-color="#E6B88A" />
+        </linearGradient>
+        
+        <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4e54c8" />
+            <stop offset="100%" stop-color="#8f94fb" />
+        </linearGradient>
+        
+        <!-- Filtros para sombras y efectos -->
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="rgba(0,0,0,0.15)" />
+        </filter>
+    </defs>
+    
+    <!-- Fondo más claro -->
+    <rect width="200" height="200" fill="url(#bgGradient)" rx="10" />
+    
+    <!-- Cabeza con forma más humana -->
+    <path d="M100 30c27.6 0 50 22.4 50 50v5c0 27.6-22.4 50-50 50s-50-22.4-50-50v-5c0-27.6 22.4-50 50-50z" 
+          fill="url(#skinGradient)" filter="url(#shadow)" />
+    
+    <!-- Cabello -->
+    <path d="M100 30c-20 0-38 8-50 20 5-15 20-25 40-25s35 10 40 25c-12-12-30-20-50-20z" 
+          fill="#2c3e50" />
+    
+    <!-- Gafas de realidad aumentada -->
+    <path d="M60 75c0-5 5-10 10-10h10c5 0 10 5 10 10v5c0 5-5 10-10 10H70c-5 0-10-5-10-10v-5z" 
+          fill="rgba(78, 84, 200, 0.2)" stroke="url(#techGradient)" stroke-width="2" />
+    <path d="M110 75c0-5 5-10 10-10h10c5 0 10 5 10 10v5c0 5-5 10-10 10h-10c-5 0-10-5-10-10v-5z" 
+          fill="rgba(78, 84, 200, 0.2)" stroke="url(#techGradient)" stroke-width="2" />
+    <path d="M120 80h-40" stroke="url(#techGradient)" stroke-width="2" />
+    
+    <!-- Ojos más realistas -->
+    <circle cx="80" cy="80" r="5" fill="#2c3e50" />
+    <circle cx="120" cy="80" r="5" fill="#2c3e50" />
+    <circle cx="81" cy="79" r="2" fill="#fff" />
+    <circle cx="119" cy="79" r="2" fill="#fff" />
+    
+    <!-- Sonrisa sutil -->
+    <path d="M85 100c2 5 6 8 15 8s13-3 15-8" 
+          stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round" />
+    
+    <!-- Cuello -->
+    <rect x="90" y="115" width="20" height="15" fill="#E6B88A" />
+    
+    <!-- Brazo izquierdo -->
+    <path d="M60 130c10 0 15 10 15 20v30H60v-50z" 
+          fill="url(#skinGradient)" stroke="#D4A574" stroke-width="1" />
+    
+    <!-- Laptop - Estilo inspirado en fund-svgrepo-com -->
+    <g transform="translate(0, -15)">
+        <!-- Base de la laptop -->
+        <path d="M30 180h140c5.5 0 10 4.5 10 10v10H20v-10c0-5.5 4.5-10 10-10z" 
+              fill="#E6D8DF" stroke="#843A5F" stroke-width="1.5" />
+        
+        <!-- Teclado -->
+        <rect x="50" y="160" width="100" height="20" rx="2" fill="#FFFFFF" stroke="#843A5F" stroke-width="1.5" />
+        <rect x="60" y="170" width="80" height="3" rx="1" fill="#843A5F" fill-opacity="0.3" />
+        
+        <!-- Pantalla -->
+        <rect x="40" y="100" width="120" height="70" rx="3" fill="#FFFFFF" stroke="#843A5F" stroke-width="1.5" />
+        
+        <!-- Contenido de la pantalla -->
+        <rect x="50" y="110" width="100" height="50" rx="1" fill="#F0F0F0" />
+        
+        <!-- Líneas de código -->
+        <g fill="#843A5F" font-family="monospace" font-size="4" font-weight="bold">
+            <text x="55" y="120">// Código de ejemplo</text>
+            <text x="55" y="128">function init() {</text>
+            <text x="60" y="136">console.log('Hola');</text>
+            <text x="55" y="144">}</text>
+            <text x="55" y="152">init();</text>
+        </g>
+        
+        <!-- Bisagra -->
+        <rect x="85" y="180" width="30" height="5" rx="1" fill="#AE9AA4" />
+        
+        <!-- Detalles decorativos -->
+        <circle cx="75" cy="185" r="2" fill="#843A5F" />
+        <circle cx="85" cy="185" r="2" fill="#843A5F" />
+    </g>
+    
+    <!-- Brazo derecho -->
+    <path d="M140 130c-10 0-15 10-15 20v30h15v-50z" 
+          fill="url(#skinGradient)" stroke="#D4A574" stroke-width="1" />
+    
+    <!-- Efectos de datos flotantes -->
+    <g fill="url(#techGradient)" opacity="0.6">
+        <circle cx="40" cy="50" r="3">
+            <animate attributeName="cy" values="50;45;50" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="160" cy="60" r="2">
+            <animate attributeName="cy" values="60;65;60" dur="3s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    
+    <!-- Reflejo en las gafas -->
+    <path d="M65 70l5-5M125 70l-5-5" 
+          stroke="#fff" stroke-width="1" stroke-opacity="0.5" />
+          
+</svg>

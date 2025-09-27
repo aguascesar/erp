@@ -1,0 +1,109 @@
+/* Estilos para checkboxes personalizados en toda la aplicación */
+
+/* Variables para temas */
+:root {
+    --checkbox-bg: #f8f9fc;
+    --checkbox-border: #ddd;
+    --checkbox-hover: #e3e6f0;
+    --checkbox-checked-bg: #e3f2fd;
+    --checkbox-checked-border: #4e73df;
+    --checkbox-text: #5a5c69;
+}
+
+/* Tema oscuro */
+html[data-theme="dark"] {
+    --checkbox-bg: #2d3748;
+    --checkbox-border: #4a5568;
+    --checkbox-hover: #4a5568;
+    --checkbox-checked-bg: #2d4369;
+    --checkbox-checked-border: #4e73df;
+    --checkbox-text: #e2e8f0;
+}
+
+/* Contenedor de checkboxes */
+.checkboxes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 15px 0;
+}
+
+/* Estilo base para cada ítem de checkbox */
+.checkbox-item {
+    border: 1px solid var(--checkbox-border);
+    padding: 12px 15px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    background-color: var(--checkbox-bg);
+    color: var(--checkbox-text);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Efecto hover */
+.checkbox-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Estilo del checkbox */
+.checkbox-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Estilo de la etiqueta */
+.checkbox-item label {
+    font-size: 1.1rem;
+    color: #5a5c69;
+    margin: 0;
+    cursor: pointer;
+    flex-grow: 1;
+    font-weight: 500;
+    user-select: none;
+}
+
+/* Colores de fondo para los checkboxes */
+.checkbox-item.primary { background-color: #4e73df; }
+.checkbox-item.info { background-color: #36b9cc; }
+.checkbox-item.warning { background-color: #f6c23e; }
+.checkbox-item.danger { background-color: #e74a3b; }
+.checkbox-item.success { background-color: #1cc88a; }
+.checkbox-item.secondary { background-color: #858796; }
+
+/* Estilo cuando el checkbox está marcado */
+.checkbox-item input[type="checkbox"]:checked + label {
+    color: white !important;
+    font-weight: 600;
+}
+
+/* Para checkboxes en formularios */
+.form-check .form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+    margin-top: 0.2em;
+}
+
+.form-check-label {
+    font-size: 1rem;
+    padding-left: 0.5em;
+    cursor: pointer;
+}
+
+/* Para checkboxes en tablas */
+.table .form-check-input {
+    margin-left: 0;
+}
+
+/* Estilo para checkboxes en modo oscuro */
+.sidebar-dark .checkbox-item {
+    background-color: #5a5c69;
+    border-color: #6c757d;
+}
+
+.sidebar-dark .checkbox-item label {
+    color: #f8f9fc;
+}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Cliente</title>
+    <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/css/fonts.css" rel="stylesheet">
+    <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../../assets/css/custom-theme.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.html">
+                <div class="sidebar-brand-text mx-3">Gestión Clientes</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="lista.html">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+            </li>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <h1 class="h3 mb-0 text-gray-800">Agregar Nuevo Cliente</h1>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <form id="form-cliente">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="rut">RUT Cliente</label>
+                                            <input type="text" class="form-control" id="rut" name="rut" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="tipo">Tipo de Cliente</label>
+                                            <select class="form-control" id="tipo" name="tipo" required>
+                                                <option value="">Seleccione un tipo</option>
+                                                <option value="natural">Persona Natural</option>
+                                                <option value="empresa">Empresa</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="rSocial">Razón Social</label>
+                                    <input type="text" class="form-control" id="rSocial" name="rSocial" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="alias">Apodo o Alias</label>
+                                    <input type="text" class="form-control" id="alias" name="alias">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion" name="direccion" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="comuna">Comuna</label>
+                                            <input type="text" class="form-control" id="comuna" name="comuna" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="telefono">Teléfono</label>
+                                            <input type="tel" class="form-control" id="telefono" name="telefono"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="giro1">Giro 1</label>
+                                            <input type="text" class="form-control" id="giro1" name="giro1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="giro2">Giro 2</label>
+                                            <input type="text" class="form-control" id="giro2" name="giro2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="user">Usuario</label>
+                                            <input type="text" class="form-control" id="user" name="user" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pass">Contraseña</label>
+                                            <input type="password" class="form-control" id="pass" name="pass" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <a href="lista.html" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left"></i> Volver
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Guardar Cliente
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Core JavaScript -->
+    <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+    <!-- Nuestros scripts -->
+    <script src="../../assets/js/clientes.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('form-cliente');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Obtener los datos del formulario
+                const cliente = {
+                    rut: document.getElementById('rut').value,
+                    tipo: document.getElementById('tipo').value,
+                    rSocial: document.getElementById('rSocial').value,
+                    alias: document.getElementById('alias').value,
+                    direccion: document.getElementById('direccion').value,
+                    comuna: document.getElementById('comuna').value,
+                    telefono: document.getElementById('telefono').value,
+                    giro1: document.getElementById('giro1').value,
+                    giro2: document.getElementById('giro2').value,
+                    email: document.getElementById('email').value,
+                    user: document.getElementById('user').value,
+                    pass: document.getElementById('pass').value
+                };
+
+                try {
+                    // Guardar el cliente
+                    clienteService.guardarCliente(cliente);
+
+                    // Mostrar mensaje de éxito
+                    alert('Cliente guardado correctamente');
+
+                    // Redirigir al listado
+                    window.location.href = 'lista.html';
+                } catch (error) {
+                    console.error('Error al guardar el cliente:', error);
+                    alert('Ocurrió un error al guardar el cliente');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

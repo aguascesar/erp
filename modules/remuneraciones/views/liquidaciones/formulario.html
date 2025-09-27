@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Nueva Liquidación - Módulo de Remuneraciones</title>
+
+    <!-- Favicon -->
+
+    <link rel="icon" href="../../../assets/img/icon-axia.svg">
+
+    <!-- Font Awesome -->
+    <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap CSS 
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    -->
+
+    <!-- SB Admin 2 CSS -->
+    <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Estilos personalizados -->
+    <link href="../../css/styles.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 
+    <link rel="stylesheet" href="/assets/vendor/sweetalert2/sweetalert2.min.css">
+    -->
+
+
+
+    <style>
+        .card {
+            margin-bottom: 20px;
+            border: 1px solid #e3e6f0;
+            border-radius: 0.35rem;
+        }
+
+        .card-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+        }
+
+        .nav-tabs .nav-link {
+            color: #4e73df;
+        }
+
+        .nav-tabs .nav-link.active {
+            font-weight: 600;
+        }
+
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/remus/index.html">
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Remuneraciones</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Módulos
+            </div>
+
+            <!-- Nav Item - Liquidaciones -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/remus/views/liquidaciones/lista.html">
+                    <i class="fas fa-fw fa-file-invoice-dollar"></i>
+                    <span>Liquidaciones</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Empleados -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/views/empleados/lista.html">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Empleados</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Reportes -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/views/reportes/lista.html">
+                    <i class="fas fa-fw fa-chart-bar"></i>
+                    <span>Reportes</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Nav Item - Configuración -->
+            <li class="nav-item">
+                <a class="nav-link" href="/remus/views/configuracion/lista.html">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600">Administrador</span>
+                                <img class="img-profile rounded-circle" src="/public/assets/assets/img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Perfil
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Configuración
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Cerrar Sesión
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800" id="liquidacion-titulo">Nueva Liquidación</h1>
+                        <div>
+                            <a href="lista.html" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+                                <i class="fas fa-arrow-left fa-sm text-white-50"></i> Volver
+                            </a>
+                            <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
+                                id="guardar-liquidacion">
+                                <i class="fas fa-save fa-sm text-white-50"></i> Guardar
+                            </button>
+                            <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                                id="calcular-liquidacion">
+                                <i class="fas fa-calculator fa-sm text-white-50"></i> Calcular
+                            </button>
+                            <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"
+                                id="imprimir-liquidacion" disabled>
+                                <i class="fas fa-print fa-sm text-white-50"></i> Imprimir
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <form id="form-liquidacion">
+                                        <input type="hidden" id="liquidacion-id">
+
+                                        <!-- Datos Básicos -->
+                                        <div class="row mb-4">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="empleado">Empleado *</label>
+                                                    <select class="form-control select2" id="empleado" required>
+                                                        <option value="">Seleccione un empleado...</option>
+                                                        <!-- Se cargarán dinámicamente -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="periodo">Período *</label>
+                                                    <input type="month" class="form-control" id="periodo" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="fecha-pago">Fecha Pago *</label>
+                                                    <input type="date" class="form-control" id="fecha-pago" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="dias-trabajados">Días Trabajados *</label>
+                                                    <input type="number" class="form-control" id="dias-trabajados"
+                                                        min="0" max="31" value="30" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="estado">Estado *</label>
+                                                    <select class="form-control" id="estado" required>
+                                                        <option value="borrador">Borrador</option>
+                                                        <option value="calculada">Calculada</option>
+                                                        <option value="aprobada">Aprobada</option>
+                                                        <option value="pagada">Pagada</option>
+                                                        <option value="anulada">Anulada</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Pestañas -->
+                                        <ul class="nav nav-tabs mb-4" id="liquidacionTabs" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="haberes-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#haberes" type="button" role="tab">
+                                                    Haberes
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="descuentos-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#descuentos" type="button" role="tab">
+                                                    Descuentos
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="prevision-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#prevision" type="button" role="tab">
+                                                    Previsión
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="resumen-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#resumen" type="button" role="tab">
+                                                    Resumen
+                                                </button>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Contenido de las pestañas -->
+                                        <div class="tab-content" id="liquidacionTabsContent">
+                                            <!-- Pestaña Haberes -->
+                                            <div class="tab-pane fade show active" id="haberes" role="tabpanel">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="tablaHaberes">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Concepto</th>
+                                                                <th>Unidad</th>
+                                                                <th>Cantidad</th>
+                                                                <th>Monto Unitario</th>
+                                                                <th>Total</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- Se cargarán dinámicamente -->
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="4" class="text-end"><strong>Total
+                                                                        Haberes:</strong></td>
+                                                                <td id="total-haberes">$0</td>
+                                                                <td>
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-outline-primary"
+                                                                        id="agregar-haber">
+                                                                        <i class="fas fa-plus"></i> Agregar
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- Pestaña Descuentos -->
+                                            <div class="tab-pane fade" id="descuentos" role="tabpanel">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="tablaDescuentos">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Concepto</th>
+                                                                <th>Unidad</th>
+                                                                <th>Cantidad</th>
+                                                                <th>Monto Unitario</th>
+                                                                <th>Total</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- Se cargarán dinámicamente -->
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="4" class="text-end"><strong>Total
+                                                                        Descuentos:</strong></td>
+                                                                <td id="total-descuentos">$0</td>
+                                                                <td>
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-outline-primary"
+                                                                        id="agregar-descuento">
+                                                                        <i class="fas fa-plus"></i> Agregar
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- Pestaña Previsión -->
+                                            <div class="tab-pane fade" id="prevision" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="card mb-4">
+                                                            <div class="card-header">
+                                                                <h6 class="m-0 font-weight-bold">AFP</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">AFP</label>
+                                                                    <select class="form-control" id="afp">
+                                                                        <!-- Se cargarán dinámicamente -->
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Tasa AFP (%)</label>
+                                                                    <input type="number" class="form-control"
+                                                                        id="tasa-afp" step="0.01" readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Monto AFP</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="monto-afp" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card mb-4">
+                                                            <div class="card-header">
+                                                                <h6 class="m-0 font-weight-bold">Salud</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Sistema de Salud</label>
+                                                                    <select class="form-control" id="sistema-salud">
+                                                                        <option value="fonasa">FONASA</option>
+                                                                        <option value="isapre">Isapre</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div id="isapre-container" style="display: none;">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Isapre</label>
+                                                                        <select class="form-control" id="isapre">
+                                                                            <!-- Se cargarán dinámicamente -->
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Tasa Isapre
+                                                                            (%)</label>
+                                                                        <input type="number" class="form-control"
+                                                                            id="tasa-isapre" step="0.01">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Monto Salud</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="monto-salud" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Pestaña Resumen -->
+                                            <div class="tab-pane fade" id="resumen" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="col-md-8 offset-md-2">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title mb-0">Resumen de Liquidación</h5>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <table class="table table-borderless">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>Total Haberes Imponibles:</th>
+                                                                            <td class="text-end"
+                                                                                id="resumen-haberes-imponibles">$0</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Total Haberes No Imponibles:</th>
+                                                                            <td class="text-end"
+                                                                                id="resumen-haberes-no-imponibles">$0
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="table-active">
+                                                                            <th>Total Haberes:</th>
+                                                                            <th class="text-end"
+                                                                                id="resumen-total-haberes">$0</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2">
+                                                                                <hr>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Descuentos Legales:</th>
+                                                                            <td class="text-end"
+                                                                                id="resumen-descuentos-legales">$0</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Otros Descuentos:</th>
+                                                                            <td class="text-end"
+                                                                                id="resumen-otros-descuentos">$0</td>
+                                                                        </tr>
+                                                                        <tr class="table-active">
+                                                                            <th>Total Descuentos:</th>
+                                                                            <th class="text-end"
+                                                                                id="resumen-total-descuentos">$0</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2">
+                                                                                <hr>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="table-success">
+                                                                            <th>Líquido a Pagar:</th>
+                                                                            <th class="text-end h4"
+                                                                                id="resumen-liquido-pagar">$0</th>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                                <div class="mt-4">
+                                                                    <label for="observaciones"
+                                                                        class="form-label">Observaciones</label>
+                                                                    <textarea class="form-control" id="observaciones"
+                                                                        rows="3"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <!-- /.container-fluid -->
+                        </div>
+                        <!-- End of Main Content -->
+
+                        <!-- Footer -->
+                        <footer class="sticky-footer bg-white">
+                            <div class="container my-auto">
+                                <div class="copyright text-center my-auto">
+                                    <span>Copyright &copy; Nexus ERP 2025</span>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- End of Footer -->
+                    </div>
+                    <!-- End of Content Wrapper -->
+                </div>
+                <!-- End of Page Wrapper -->
+
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
+
+                <!-- Logout Modal-->
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para
+                                finalizar su sesión actual.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-primary" href="login.html">Cerrar sesión</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para agregar/editar ítem de liquidación -->
+                <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="itemModalLabel">Agregar Ítem</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="form-item">
+                                    <input type="hidden" id="item-tipo">
+                                    <input type="hidden" id="item-indice">
+
+                                    <div class="mb-3">
+                                        <label for="item-concepto" class="form-label">Concepto</label>
+                                        <select class="form-control" id="item-concepto" required>
+                                            <!-- Se cargarán dinámicamente -->
+                                        </select>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="item-cantidad" class="form-label">Cantidad</label>
+                                                <input type="number" class="form-control" id="item-cantidad" min="0.01"
+                                                    step="0.01" value="1" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="item-unidad" class="form-label">Unidad</label>
+                                                <select class="form-control" id="item-unidad" required>
+                                                    <option value="unidad">Unidad</option>
+                                                    <option value="horas">Horas</option>
+                                                    <option value="dias">Días</option>
+                                                    <option value="mes">Mes</option>
+                                                    <option value="porcentaje">Porcentaje</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="item-monto" class="form-label">Monto Unitario</label>
+                                        <input type="number" class="form-control" id="item-monto" min="0" step="0.01"
+                                            required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="item-descripcion" class="form-label">Descripción (opcional)</label>
+                                        <textarea class="form-control" id="item-descripcion" rows="2"></textarea>
+                                    </div>
+
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="item-imponible" checked>
+                                        <label class="form-check-label" for="item-imponible">Imponible</label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="guardar-item">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>

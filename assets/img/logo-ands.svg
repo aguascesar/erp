@@ -1,0 +1,18 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="a" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#2c3e50"/>
+            <stop offset="100%" stop-color="#3498db"/>
+        </linearGradient>
+    </defs>
+
+    <!-- Forma geométrica abstracta que combina A y X -->
+    <path d="M60 10L20 110H40L60 60L80 110H100L60 10Z" fill="url(#a)"/>
+    <path d="M35 50L85 50" stroke="url(#a)" stroke-width="8" stroke-linecap="round"/>
+
+    <!-- Puntos de conexión -->
+    <circle cx="30" cy="30" r="5" fill="#3498db"/>
+    <circle cx="90" cy="30" r="5" fill="#2c3e50"/>
+    <circle cx="30" cy="90" r="5" fill="#2c3e50"/>
+    <circle cx="90" cy="90" r="5" fill="#3498db"/>
+</svg>

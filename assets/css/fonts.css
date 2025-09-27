@@ -1,0 +1,22 @@
+/*
+  Nunito - Variable Font
+  This is a variable font that includes all weights and styles.
+  The woff2 format is used for modern browsers.
+*/
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('../../fonts/XRXV3I6Li01BKofINeaB.woff2') format('woff2');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Italic variant */
+@font-face {
+  font-family: 'Nunito';
+  src: url('../../fonts/XRXV3I6Li01BKofINeaB.woff2') format('woff2');
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}

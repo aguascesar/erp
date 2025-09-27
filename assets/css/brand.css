@@ -1,0 +1,139 @@
+/* AXIA ERP Brand Styles */
+:root {
+    --brand-primary: #2c3e50;
+    --brand-accent: #3498db;
+    --brand-gradient: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    --brand-text: #2c3e50;
+    --brand-text-light: #7f8c8d;
+    --brand-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand Logo Styling */
+.brand-logo {
+    display: flex;
+    align-items: center;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--brand-primary);
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+.brand-logo .brand-name {
+    position: relative;
+    display: inline-block;
+}
+
+.brand-logo .brand-name span {
+    position: relative;
+    z-index: 1;
+}
+
+.brand-logo .brand-accent {
+    color: var(--brand-accent);
+    font-weight: 700;
+}
+
+/* Brand Text Styling */
+.brand-text {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 800;
+    color: var(--brand-primary);
+}
+
+.brand-text .accent {
+    color: var(--brand-accent);
+    font-weight: 700;
+}
+
+/* Brand Badge */
+.brand-badge {
+    display: inline-block;
+    background: var(--brand-gradient);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--brand-shadow);
+}
+
+/* Brand Footer */
+.brand-footer {
+    color: var(--brand-text-light);
+    font-size: 0.9rem;
+}
+
+/* Brand Buttons */
+.btn-brand {
+    background: var(--brand-gradient);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-brand:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
+    color: white;
+}
+
+.btn-outline-brand {
+    background: transparent;
+    border: 2px solid var(--brand-accent);
+    color: var(--brand-accent);
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-brand:hover {
+    background: var(--brand-accent);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(52, 152, 219, 0.3);
+}
+
+/* Brand Section */
+.brand-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #f8f9fc 0%, #f1f5f9 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.brand-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyMDQsIDIwNCwgMjA0LCAwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.brand-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .brand-logo {
+        font-size: 1.25rem;
+    }
+    
+    .brand-section {
+        padding: 3rem 0;
+    }
+}

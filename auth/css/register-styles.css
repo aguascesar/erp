@@ -1,0 +1,76 @@
+/* Estilos específicos para el formulario de registro */
+
+/* Asegurar que el body tenga el tamaño de fuente base */
+body {
+    font-size: 16px !important;
+}
+
+/* Estilos para los campos de formulario */
+#registerForm .form-control,
+#registerForm .form-select {
+    font-size: 1.1rem !important;
+    padding: 0.8rem 1rem !important;
+    height: auto !important;
+    line-height: 1.5 !important;
+    background-color: #3a3f44 !important;
+    border: 1px solid #4e545a !important;
+    color: #ffffff !important;
+    border-radius: 10rem !important; /* Bordes redondeados */
+}
+
+/* Placeholders */
+#registerForm .form-control::placeholder {
+    color: #adb5bd !important;
+    opacity: 0.8 !important;
+    font-size: 1rem !important;
+}
+
+/* Focus states */
+#registerForm .form-control:focus,
+#registerForm .form-select:focus {
+    border-color: #4e73df !important;
+    box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25) !important;
+    background-color: #3a3f44 !important;
+    color: #ffffff !important;
+    border-radius: 10rem !important; /* Bordes redondeados en focus */
+}
+
+/* Etiquetas */
+#registerForm .form-group label {
+    font-size: 1rem !important;
+    color: #e9ecef !important;
+    margin-bottom: 0.5rem !important;
+    font-weight: 500 !important;
+    display: block;
+}
+
+/* Botones */
+#registerForm .btn {
+    font-size: 1.1rem !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 10rem !important; /* Bordes redondeados para botones */
+    font-weight: 500 !important;
+}
+
+/* Mensajes de error/éxito */
+.alert {
+    font-size: 1.05rem !important;
+    padding: 1rem 1.25rem !important;
+    border: none !important;
+    border-radius: 0.35rem !important;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    #registerForm .form-control,
+    #registerForm .form-select,
+    #registerForm .btn {
+        font-size: 1.15rem !important;
+        padding: 1rem 1.25rem !important;
+        border-radius: 10rem !important; /* Bordes redondeados en móviles */
+    }
+
+    #registerForm .form-group {
+        margin-bottom: 1.25rem !important;
+    }
+}

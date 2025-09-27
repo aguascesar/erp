@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>AXIA ERP - Editar Producto</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/css/fonts.css">
+
+    <!-- Custom styles for this template-->
+    <link href="../../assets/css/custom-theme.css" rel="stylesheet">
+    <!-- Custom checkboxes styles -->
+    <link href="../../assets/css/custom-checkboxes.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../dashboard.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">AXIA ERP</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Gestión
+            </div>
+
+            <!-- Nav Item - Clientes -->
+            <li class="nav-item">
+                <a class="nav-link" href="../clientes/lista.html">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Clientes</span></a>
+            </li>
+
+            <!-- Nav Item - Usuarios -->
+            <li class="nav-item">
+                <a class="nav-link" href="../usuarios/lista.html">
+                    <i class="fas fa-fw fa-user-shield"></i>
+                    <span>Usuarios</span></a>
+            </li>
+
+            <!-- Nav Item - Productos (Activo) -->
+            <li class="nav-item active">
+                <a class="nav-link" href="lista.html">
+                    <i class="fas fa-fw fa-box"></i>
+                    <span>Productos</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                                <img class="img-profile rounded-circle" src="../../assets/img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Perfil
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Configuración
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Cerrar Sesión
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Editar Producto</h1>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Información del Producto</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form id="formProducto">
+                                        <input type="hidden" id="productoId">
+                                        <div class="mb-3">
+                                            <label for="nombre" class="form-label">Nombre del Producto</label>
+                                            <input type="text" class="form-control" id="nombre" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="descripcion" class="form-label">Descripción</label>
+                                            <textarea class="form-control" id="descripcion" rows="3"></textarea>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="precio" class="form-label">Precio</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="number" class="form-control" id="precio" min="0"
+                                                        step="0.01" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="stock" class="form-label">Stock Disponible</label>
+                                                <input type="number" class="form-control" id="stock" min="0" value="0"
+                                                    required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Banderas (Etiquetas)</label>
+                                            <div class="banderas-container" id="banderasContainer">
+                                                <!-- Las banderas se generarán dinámicamente con JavaScript -->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-right">
+                                                <a href="lista.html" class="btn btn-secondary btn-icon-split mr-2">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-arrow-left"></i>
+                                                    </span>
+                                                    <span class="text">Volver a la lista</span>
+                                                </a>
+                                                <button type="submit" class="btn btn-primary btn-icon-split">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-save"></i>
+                                                    </span>
+                                                    <span class="text">Guardar Cambios</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
+                    actual.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="login.html">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+    <script>
+        // Obtener el ID del producto de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productoId = urlParams.get('id');
+
+        // Función para cargar los datos del producto
+        function cargarProducto() {
+            if (!productoId) {
+                mostrarError('ID de producto no especificado');
+                return;
+            }
+
+            const productos = JSON.parse(localStorage.getItem('productos')) || [];
+            const producto = productos.find(p => p.id == productoId);
+
+            if (!producto) {
+                mostrarError('Producto no encontrado');
+                return;
+            }
+
+            // Llenar el formulario con los datos del producto
+            $('#productoId').val(producto.id);
+            $('#nombre').val(producto.nombre);
+            $('#descripcion').val(producto.descripcion || '');
+            $('#precio').val(producto.precio);
+            $('#stock').val(producto.stock || 0);
+
+            // Cargar banderas
+            cargarBanderas(producto.banderas || []);
+        }
+
+
+        // Función para cargar las banderas disponibles
+        function cargarBanderas(banderasSeleccionadas = []) {
+            const banderas = [
+                { id: 'nuevo', nombre: 'Nuevo' },
+                { id: 'oferta', nombre: 'En Oferta' },
+                { id: 'destacado', nombre: 'Destacado' },
+                { id: 'agotado', nombre: 'Próximamente' },
+                { id: 'sin_gluten', nombre: 'Sin Gluten' },
+                { id: 'vegano', nombre: 'Vegano' }
+            ];
+
+            const container = $('#banderasContainer');
+            container.empty();
+
+            banderas.forEach(bandera => {
+                const isChecked = banderasSeleccionadas.includes(bandera.id);
+                container.append(`
+                    <div class="form-check form-check-inline checkbox-item">
+                        <input class="form-check-input" type="checkbox" id="bandera-${bandera.id}"
+                               value="${bandera.id}" ${isChecked ? 'checked' : ''}>
+                        <label class="form-check-label" for="bandera-${bandera.id}">
+                            ${bandera.nombre}
+                        </label>
+                    </div>
+                `);
+            });
+        }
+
+        // Función para guardar los cambios del producto
+        function guardarCambios(e) {
+            e.preventDefault();
+
+            // Obtener valores del formulario
+            const producto = {
+                id: $('#productoId').val(),
+                nombre: $('#nombre').val(),
+                descripcion: $('#descripcion').val(),
+                precio: parseFloat($('#precio').val()),
+                stock: parseInt($('#stock').val()),
+                banderas: []
+            };
+
+            // Obtener banderas seleccionadas
+            $('.banderas-container input[type="checkbox"]:checked').each(function () {
+                producto.banderas.push($(this).val());
+            });
+
+            // Obtener productos existentes
+            let productos = JSON.parse(localStorage.getItem('productos')) || [];
+
+            // Actualizar el producto
+            const index = productos.findIndex(p => p.id == producto.id);
+            if (index !== -1) {
+                // Mantener la fecha de creación original
+                producto.fechaCreacion = productos[index].fechaCreacion || new Date().toISOString();
+                productos[index] = producto;
+
+                // Guardar en localStorage
+                localStorage.setItem('productos', JSON.stringify(productos));
+
+                // Mostrar notificación de éxito
+                mostrarExito('Producto actualizado correctamente');
+
+                // Redirigir a la lista después de 1.5 segundos
+                setTimeout(() => {
+                    window.location.href = 'lista.html';
+                }, 1500);
+            } else {
+                mostrarError('No se pudo encontrar el producto para actualizar');
+            }
+        }
+
+        // Función para mostrar mensajes de error
+        function mostrarError(mensaje) {
+            const alerta = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${mensaje}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+            $('.container-fluid').prepend(alerta);
+        }
+
+        // Función para mostrar mensajes de éxito
+        function mostrarExito(mensaje) {
+            const alerta = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${mensaje}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+            $('.container-fluid').prepend(alerta);
+        }
+
+        // Inicializar cuando el documento esté listo
+        $(document).ready(function () {
+            // Cargar datos del producto
+            cargarProducto();
+
+            // Manejar el envío del formulario
+            $('#formProducto').on('submit', guardarCambios);
+        });
+    </script>
+</body>
+
+</html>

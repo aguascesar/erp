@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Cargar tema antes de cualquier otro recurso para evitar parpadeo -->
+    <script>
+        // Cargar tema guardado inmediatamente
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.classList.add('dark-theme');
+            }
+        })();
+    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/x-icon" href="../assets/img/fotor-ai-20240426194848.ico">
+    <title>AXIA ERP - Usuarios</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/css/fonts.css" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="../../assets/css/custom-theme.css" rel="stylesheet">
+
+    <style>
+        /* Asegurar que la fuente se aplique correctamente */
+        body {
+            font-family: 'Nunito', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        /* Ajustes específicos para el tema oscuro */
+        [data-theme="dark"] {
+            /* Fondo general */
+            --body-bg: #1a1a2e;
+            --body-color: #e6e6e6;
+
+            /* Tarjetas */
+            --card-bg: #16213e;
+            --card-border: #2a3a57;
+
+            /* Inputs */
+            --input-bg: #0f3460;
+            --input-border: #2a3a57;
+            --input-focus: #4e73df;
+
+            /* Tablas */
+            --table-bg: #16213e;
+            --table-color: #e6e6e6;
+            --table-border: #2a3a57;
+            --table-hover: #0f3460;
+        }
+
+        /* Ajustes para el sidebar en tema oscuro */
+        [data-theme="dark"] #accordionSidebar {
+            background: var(--card-bg) !important;
+            background-image: none !important;
+        }
+
+        [data-theme="dark"] .sidebar-dark .nav-item .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        [data-theme="dark"] .sidebar-dark .nav-item .nav-link:hover {
+            color: #fff !important;
+            background-color: var(--table-hover) !important;
+        }
+
+        [data-theme="dark"] .sidebar-dark .nav-item.active .nav-link {
+            color: #fff !important;
+            background-color: var(--table-hover) !important;
+        }
+
+        /* Ajustes para el topbar en tema oscuro */
+        [data-theme="dark"] .topbar,
+        [data-theme="dark"] .topbar .navbar {
+            background-color: var(--card-bg) !important;
+            border-bottom: 1px solid var(--table-border) !important;
+        }
+
+        [data-theme="dark"] .topbar .navbar-search .form-control {
+            background-color: var(--input-bg);
+            border-color: var(--input-border);
+            color: var(--body-color);
+        }
+
+        /* Ajustes para DataTables */
+        [data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+            color: var(--body-color) !important;
+        }
+
+        [data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        [data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: var(--input-focus) !important;
+            color: white !important;
+            border-color: var(--input-focus) !important;
+        }
+
+        /* Ajustes para los badges */
+        [data-theme="dark"] .badge-admin {
+            background-color: var(--input-focus);
+            color: white;
+        }
+
+        [data-theme="dark"] .badge-user {
+            background-color: #1cc88a;
+            color: white;
+        }
+
+        /* Avatar de usuario */
+        [data-theme="dark"] .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid var(--table-border);
+        }
+
+        /* Ajustes de layout */
+        #wrapper {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        #content-wrapper {
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-left: -250px;
+            }
+
+            .sidebar.active {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../dashboard.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">AXIA ERP</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Gestión
+            </div>
+
+            <!-- Nav Item - Clientes -->
+            <li class="nav-item">
+                <a class="nav-link" href="../clientes/lista.html">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Usuarios -->
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Usuarios</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+                                <img class="img-profile rounded-circle" src="../../assets/img/undraw_profile.svg">
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Lista de Usuarios</h1>
+                        <a href="agregar.html" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-plus fa-sm text-white-50"></i> Nuevo Usuario
+                        </a>
+                    </div>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>RUT</th>
+                                            <th>Nombre Completo</th>
+                                            <th>Email</th>
+                                            <th>Usuario</th>
+                                            <th>Rol</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>RUT</th>
+                                            <th>Nombre Completo</th>
+                                            <th>Email</th>
+                                            <th>Usuario</th>
+                                            <th>Rol</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="tablaUsuarios">
+                                        <!-- Los usuarios se cargarán aquí dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="../../assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="../../assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom scripts for this page -->
+    <script src="../../assets/js/usuarios.js"></script>
+
+    <script>
+        // Verificar que el servicio esté disponible
+        if (typeof usuarioService === 'undefined') {
+            console.error('Error: No se pudo cargar el servicio de usuarios');
+        }
+        // Función para formatear el RUT
+        function formatearRut(rut) {
+            if (!rut) return '';
+            rut = rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
+            if (rut.length <= 1) return rut;
+
+            const dv = rut.slice(-1);
+            let num = rut.slice(0, -1);
+            let format = '';
+            let contador = 0;
+
+            for (let i = num.length - 1; i >= 0; i--) {
+                format = num.charAt(i) + format;
+                contador++;
+                if (contador === 3 && i !== 0) {
+                    format = '.' + format;
+                    contador = 0;
+                }
+            }
+
+            return format + '-' + dv;
+        }
+
+        // Función para cargar los usuarios en la tabla
+        function cargarUsuarios() {
+            console.log('Iniciando carga de usuarios...');
+            const $tabla = $('#dataTable');
+
+            // Mostrar mensaje de carga
+            $tabla.html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"><span class="sr-only">Cargando...</span></div></div>');
+
+            // Si DataTable ya está inicializado, destrúyelo antes de recargar
+            if ($.fn.DataTable.isDataTable($tabla)) {
+                $tabla.DataTable().clear().destroy();
+            }
+
+            // Reconstruir el thead para asegurar que esté limpio
+            $tabla.html(`
+                <thead>
+                    <tr>
+                        <th>RUT</th>
+                        <th>Nombre Completo</th>
+                        <th>Email</th>
+                        <th>Usuario</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `);
+
+            // Obtener y preparar los datos para DataTables
+            try {
+                const todosUsuarios = usuarioService.obtenerUsuarios();
+                console.log('Total de usuarios cargados:', todosUsuarios.length);
+
+                // Mostrar todos los usuarios, incluyendo inactivos
+                const usuarios = [...todosUsuarios]; // Crear una copia del array
+                console.log('Total de usuarios a mostrar:', usuarios.length);
+
+                if (usuarios.length === 0) {
+                    console.warn('No se encontraron usuarios para mostrar');
+                    $tabla.html('<div class="alert alert-warning m-3">No se encontraron usuarios.</div>');
+                    return;
+                }
+
+                const datosTabla = usuarios.map(usuario => {
+                    return [
+                        formatearRut(usuario.rut) || '',
+                        `
+                        <div class="d-flex align-items-center">
+                            <img src="${usuario.foto || '../../assets/img/undraw_profile.svg'}" 
+                                 class="user-avatar" alt="${usuario.nombre} ${usuario.apellido}">
+                            ${usuario.nombre || ''} ${usuario.apellido || ''}
+                        </div>
+                    `,
+                        usuario.email || '',
+                        usuario.user || '',
+                        `
+                        <span class="badge ${usuario.tipo === 'Administrador' ? 'badge-admin' : 'badge-user'}">
+                            ${usuario.tipo || 'Usuario'}
+                        </span>
+                    `,
+                        `
+                        <span class="badge ${usuario.estado === 'Activo' ? 'badge-success' : (usuario.estado === 'Inactivo' ? 'badge-secondary' : 'badge-warning')}">
+                            ${usuario.estado || 'Sin estado'}
+                        </span>
+                    `,
+                        `
+                        <div class="btn-group" role="group">
+                            <a href="editar.html?id=${usuario.id}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            ${usuario.estado === 'Activo' ?
+                            `<button class="btn btn-sm btn-warning btn-inactivar" data-id="${usuario.id}" data-toggle="tooltip" title="Marcar como inactivo">
+                                    <i class="fas fa-user-slash"></i>
+                                </button>` :
+                            `<button class="btn btn-sm btn-success btn-reactivar" data-id="${usuario.id}" data-toggle="tooltip" title="Reactivar usuario">
+                                    <i class="fas fa-user-check"></i>
+                                </button>`
+                        }
+                            ${usuario.estado === 'Inactivo' ?
+                            `<button class="btn btn-sm btn-danger btn-eliminar" data-id="${usuario.id}" data-toggle="tooltip" title="Eliminar permanentemente">
+                                    <i class="fas fa-trash"></i>
+                                </button>` : ''
+                        }
+                        </div>
+                    `
+                    ];
+                });
+
+                // Inicializar DataTable con los datos
+                $tabla.DataTable({
+                    data: datosTabla,
+                    language: {
+                        search: 'Buscar:',
+                        lengthMenu: 'Mostrar _MENU_ registros',
+                        zeroRecords: 'No se encontraron registros',
+                        info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+                        infoEmpty: 'Mostrando 0 a 0 de 0 registros',
+                        infoFiltered: '(filtrado de _MAX_ registros en total)',
+                        paginate: {
+                            first: 'Primero',
+                            last: 'Último',
+                            next: 'Siguiente',
+                            previous: 'Anterior'
+                        }
+                    },
+                    responsive: true,
+                    autoWidth: false,
+                    columnDefs: [
+                        { orderable: false, targets: [6] }, // Deshabilitar ordenación en columna de acciones
+                        { className: 'align-middle', targets: '_all' } // Alinear verticalmente el contenido
+                    ],
+                    processing: false,
+                    serverSide: false
+                });
+
+                // Reasignar manejador de eliminación después de recargar la tabla
+                manejarEliminacionUsuario();
+
+            } catch (error) {
+                console.error('Error al cargar usuarios:', error);
+                $tabla.html('<div class="alert alert-danger m-3">Error al cargar los usuarios. Por favor, recarga la página.</div>');
+            }
+        }
+
+        // Cargar usuarios al iniciar la página
+        $(document).ready(function () {
+            cargarUsuarios();
+
+            // Inicializar tooltips
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger: 'hover',
+                placement: 'top'
+            });
+
+            // Manejar eventos de los botones
+            manejarInactivacionUsuario();
+            manejarEliminacionUsuario();
+        });
+
+        // Función para manejar la inactivación de usuarios
+        function manejarInactivacionUsuario() {
+            // Manejar botón de inactivar
+            $('.btn-inactivar').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const $boton = $(this);
+                const id = $boton.data('id');
+
+                if (confirm('¿Está seguro de que desea marcar este usuario como inactivo? El usuario no podrá iniciar sesión pero sus datos se mantendrán.')) {
+                    console.log('Intentando marcar como inactivo usuario con ID:', id);
+
+                    try {
+                        const resultado = usuarioService.eliminarUsuario(id);
+                        console.log('Resultado de inactivación:', resultado);
+
+                        if (resultado.exito) {
+                            mostrarAlerta('success', 'Usuario marcado como inactivo correctamente');
+                            setTimeout(() => cargarUsuarios(), 500);
+                        } else {
+                            mostrarAlerta('danger', resultado.mensaje || 'Error al marcar el usuario como inactivo');
+                        }
+                    } catch (error) {
+                        console.error('Error al marcar usuario como inactivo:', error);
+                        mostrarAlerta('danger', 'Error inesperado al marcar el usuario como inactivo');
+                    }
+                }
+            });
+
+            // Manejar botón de reactivar
+            $('.btn-reactivar').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const $boton = $(this);
+                const id = $boton.data('id');
+
+                if (confirm('¿Desea reactivar este usuario? El usuario podrá iniciar sesión nuevamente.')) {
+                    console.log('Intentando reactivar usuario con ID:', id);
+
+                    try {
+                        const resultado = usuarioService.reactivarUsuario(id);
+                        console.log('Resultado de reactivación:', resultado);
+
+                        if (resultado.exito) {
+                            mostrarAlerta('success', 'Usuario reactivado correctamente');
+                            setTimeout(() => cargarUsuarios(), 500);
+                        } else {
+                            mostrarAlerta('danger', resultado.mensaje || 'Error al reactivar el usuario');
+                        }
+                    } catch (error) {
+                        console.error('Error al reactivar usuario:', error);
+                        mostrarAlerta('danger', 'Error inesperado al reactivar el usuario');
+                    }
+                }
+            });
+        }
+
+        // Función para manejar la eliminación de usuarios
+        function manejarEliminacionUsuario() {
+            const $btnEliminar = $('.btn-eliminar');
+
+            // Eliminar manejadores de eventos existentes para evitar duplicados
+            $btnEliminar.off('click');
+
+            // Agregar nuevo manejador de eventos
+            $btnEliminar.on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const $boton = $(this);
+                const id = $boton.data('id');
+
+                if (confirm('¿Está seguro de que desea eliminar permanentemente este usuario? Esta acción no se puede deshacer y todos los datos del usuario se perderán.')) {
+                    console.log('Intentando eliminar permanentemente usuario con ID:', id);
+
+                    try {
+                        const resultado = usuarioService.eliminarPermanente(id);
+                        console.log('Resultado de eliminación permanente:', resultado);
+
+                        if (resultado.exito) {
+                            // Mostrar notificación de éxito
+                            mostrarAlerta('success', 'Usuario eliminado permanentemente correctamente');
+
+                            // Recargar la tabla después de un breve retraso
+                            setTimeout(() => cargarUsuarios(), 500);
+                        } else {
+                            // Mostrar mensaje de error
+                            mostrarAlerta('danger', resultado.mensaje || 'Error al eliminar el usuario');
+                        }
+                    } catch (error) {
+                        console.error('Error al eliminar usuario:', error);
+                        mostrarAlerta('danger', 'Error inesperado al eliminar el usuario');
+                    }
+                }
+            });
+        }
+
+        // Función para mostrar alertas
+        function mostrarAlerta(tipo, mensaje) {
+            const $alerta = $(
+                `<div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+                    ${mensaje}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`
+            );
+
+            $('.container-fluid').prepend($alerta);
+
+            // Cerrar automáticamente después de 5 segundos
+            setTimeout(() => {
+                $alerta.alert('close');
+            }, 5000);
+        }
+    </script>
+</body>
+
+</html>

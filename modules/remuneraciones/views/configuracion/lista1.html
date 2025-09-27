@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Configuración - Módulo de Remuneraciones</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/public/assets/img/favicon.ico">
+
+    <!-- Font Awesome -->
+    <link href="/public/assets/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap CSS -->
+    <link href="/public/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- SB Admin 2 CSS -->
+    <link href="/public/assets/assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="/public/assets/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="/public/assets/vendor/sweetalert2/sweetalert2.min.css">
+
+    <!-- Custom styles -->
+    <link href="/remus/css/styles.css" rel="stylesheet">
+
+    <style>
+        .config-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #4e73df;
+        }
+        .config-card .card-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #4e73df;
+        }
+        .nav-pills .nav-link {
+            color: #5a5c69;
+        }
+    </style>
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/remus/index.html">
+            <div class="sidebar-brand-icon">
+                <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Remuneraciones</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="/remus/index.html">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Inicio</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Módulos
+        </div>
+
+        <!-- Nav Item - Liquidaciones -->
+        <li class="nav-item">
+            <a class="nav-link" href="/remus/views/liquidaciones/lista.html">
+                <i class="fas fa-fw fa-file-invoice-dollar"></i>
+                <span>Liquidaciones</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Empleados -->
+        <li class="nav-item">
+            <a class="nav-link" href="/remus/views/empleados/lista.html">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Empleados</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Reportes -->
+        <li class="nav-item">
+            <a class="nav-link" href="/remus/views/reportes/lista.html">
+                <i class="fas fa-fw fa-chart-bar"></i>
+                <span>Reportes</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Nav Item - Configuración -->
+        <li class="nav-item active">
+            <a class="nav-link" href="/remus/views/configuracion/lista.html">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Configuración</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600">Administrador</span>
+                            <img class="img-profile rounded-circle"
+                                 src="/public/assets/assets/img/undraw_profile.svg">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Perfil
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Configuración
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Configuración del Sistema</h1>
+                </div>
+
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <!-- Configuración Sidebar -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Menú de Configuración</h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush">
+                                    <a href="#general" class="list-group-item list-group-item-action active" data-toggle="tab">
+                                        <i class="fas fa-fw fa-cog mr-2"></i>General
+                                    </a>
+                                    <a href="#empresa" class="list-group-item list-group-item-action" data-toggle="tab">
+                                        <i class="fas fa-fw fa-building mr-2"></i>Empresa
+                                    </a>
+                                    <a href="#parametros" class="list-group-item list-group-item-action" data-toggle="tab">
+                                        <i class="fas fa-fw fa-sliders-h mr-2"></i>Parámetros
+                                    </a>
+                                    <a href="#usuarios" class="list-group-item list-group-item-action" data-toggle="tab">
+                                        <i class="fas fa-fw fa-users mr-2"></i>Usuarios
+                                    </a>
+                                    <a href="#backup" class="list-group-item list-group-item-action" data-toggle="tab">
+                                        <i class="fas fa-fw fa-database mr-2"></i>Respaldo
+                                    </a>
+                                    <a href="#logs" class="list-group-item list-group-item-action" data-toggle="tab">
+                                        <i class="fas fa-fw fa-clipboard-list mr-2"></i>Registros
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-9">
+                        <!-- Tab Content -->
+                        <div class="tab-content">
+                            <!-- General Tab -->
+                            <div class="tab-pane fade show active" id="general">
+                                <div class="card shadow mb-4 config-card">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Configuración General</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="config-general">
+                                            <div class="form-group row">
+                                                <label for="nombre-sistema" class="col-sm-3 col-form-label">Nombre del Sistema</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="nombre-sistema" value="Nexus ERP">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="moneda" class="col-sm-3 col-form-label">Moneda</label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control" id="moneda">
+                                                        <option value="CLP" selected>Pesos Chilenos (CLP)</option>
+                                                        <option value="USD">Dólares (USD)</option>
+                                                        <option value="EUR">Euros (EUR)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="formato-fecha" class="col-sm-3 col-form-label">Formato de Fecha</label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control" id="formato-fecha">
+                                                        <option value="dd/mm/yyyy" selected>dd/mm/yyyy</option>
+                                                        <option value="mm/dd/yyyy">mm/dd/yyyy</option>
+                                                        <option value="yyyy-mm-dd">yyyy-mm-dd</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="zona-horaria" class="col-sm-3 col-form-label">Zona Horaria</label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" id="zona-horaria">
+                                                        <option value="America/Santiago" selected>(UTC-04:00) Santiago</option>
+                                                        <option value="America/New_York">(UTC-05:00) Eastern Time</option>
+                                                        <option value="UTC">(UTC) Coordinated Universal Time</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-9 offset-sm-3">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fas fa-save mr-2"></i>Guardar Cambios
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empresa Tab -->
+                            <div class="tab-pane fade" id="empresa">
+                                <div class="card shadow mb-4 config-card">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Información de la Empresa</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="config-empresa">
+                                            <div class="form-group row">
+                                                <label for="nombre-empresa" class="col-sm-3 col-form-label">Nombre de la Empresa</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="nombre-empresa" value="Mi Empresa S.A.">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="rut-empresa" class="col-sm-3 col-form-label">RUT</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="rut-empresa" value="76.543.210-8">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="giro" class="col-sm-3 col-form-label">Giro</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="giro" value="Servicios de Tecnología">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="direccion" class="col-sm-3 col-form-label">Dirección</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="direccion" value="Av. Principal 1234, Santiago">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="telefono" class="col-sm-3 col-form-label">Teléfono</label>
+                                                <div class="col-sm-4">
+                                                    <input type="tel" class="form-control" id="telefono" value="+56 2 2345 6789">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                                <div class="col-sm-6">
+                                                    <input type="email" class="form-control" id="email" value="contacto@miempresa.cl">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="logo" class="col-sm-3 col-form-label">Logo</label>
+                                                <div class="col-sm-9">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" id="logo">
+                                                        <label class="custom-file-label" for="logo">Seleccionar archivo</label>
+                                                    </div>
+                                                    <small class="form-text text-muted">Tamaño recomendado: 200x50 píxeles</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-9 offset-sm-3">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fas fa-save mr-2"></i>Guardar Cambios
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Other tabs content would go here -->
+                            <div class="tab-pane fade" id="parametros">
+                                <div class="card shadow mb-4 config-card">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Parámetros del Sistema</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="text-muted">Configuración avanzada del sistema. Modificar con precaución.</p>
+                                        <!-- Add parameter configuration here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="usuarios">
+                                <div class="card shadow mb-4 config-card">
+                                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                        <h6 class="m-0 font-weight-bold text-primary">Administración de Usuarios</h6>
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-plus mr-1"></i> Nuevo Usuario
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tablaUsuarios" width="100%" cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Usuario</th>
+                                                    <th>Nombre</th>
+                                                    <th>Email</th>
+                                                    <th>Rol</th>
+                                                    <th>Estado</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>admin</td>
+                                                    <td>Administrador del Sistema</td>
+                                                    <td>admin@miempresa.cl</td>
+                                                    <td><span class="badge badge-primary">Administrador</span></td>
+                                                    <td><span class="badge badge-success">Activo</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-info" title="Editar">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger" title="Eliminar">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="backup">
+                                <div class="card shadow mb-4 config-card">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Respaldo y Restauración</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card mb-4">
+                                                    <div class="card-header">
+                                                        <h6 class="m-0 font-weight-bold">Crear Respaldo</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p>Realice una copia de seguridad de toda la información del sistema.</p>
+                                                        <button class="btn btn-primary">
+                                                            <i class="fas fa-download mr-2"></i>Generar Respaldo
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h6 class="m-0 font-weight-bold">Restaurar desde Respaldo</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-group">
+                                                            <label>Seleccionar archivo de respaldo</label>
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="archivoRespaldo">
+                                                                <label class="custom-file-label" for="archivoRespaldo">Seleccionar archivo</label>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-warning">
+                                                            <i class="fas fa-upload mr-2"></i>Restaurar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="logs">
+                                <div class="card shadow mb-4 config-card">
+                                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                        <h6 class="m-0 font-weight-bold text-primary">Registros del Sistema</h6>
+                                        <button class="btn btn-sm btn-secondary">
+                                            <i class="fas fa-sync-alt mr-1"></i> Actualizar
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tablaLogs" width="100%" cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Fecha/Hora</th>
+                                                    <th>Usuario</th>
+                                                    <th>Acción</th>
+                                                    <th>Detalles</th>
+                                                    <th>IP</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>2023-11-15 10:30:45</td>
+                                                    <td>admin</td>
+                                                    <td>Inicio de sesión</td>
+                                                    <td>Inicio de sesión exitoso</td>
+                                                    <td>192.168.1.100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2023-11-15 09:15:22</td>
+                                                    <td>usuario1</td>
+                                                    <td>Actualización de datos</td>
+                                                    <td>Actualizó la información del empleado #123</td>
+                                                    <td>192.168.1.101</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Nexus ERP 2025</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-primary" href="login.html">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/public/assets/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/public/assets/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/public/assets/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/public/assets/assets/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/public/assets/assets/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/public/assets/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="/public/assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+
+<!-- Custom scripts -->
+<script src="/remus/js/main.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Inicializar DataTables
+        $('#tablaUsuarios, #tablaLogs').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+            },
+            "order": [[0, "desc"]]
+        });
+
+        // Actualizar el texto del input file al seleccionar un archivo
+        $('.custom-file-input').on('change', function() {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+        // Manejar envío de formularios
+        $('#config-general, #config-empresa').on('submit', function(e) {
+            e.preventDefault();
+            // Aquí iría la lógica para guardar la configuración
+            Swal.fire({
+                title: '¡Configuración guardada!',
+                text: 'Los cambios se han guardado correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        });
+
+        // Inicializar tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+</body>
+</html>

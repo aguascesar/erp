@@ -1,0 +1,64 @@
+<!-- Configuración del Sistema -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Configuración del Sistema</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold">Parámetros Generales</h6>
+                    </div>
+                    <div class="card-body">
+                        <form id="config-general">
+                            <div class="mb-3">
+                                <label for="empresa" class="form-label">Nombre de la Empresa</label>
+                                <input type="text" class="form-control" id="empresa" value="Mi Empresa S.A.">
+                            </div>
+                            <div class="mb-3">
+                                <label for="rut" class="form-label">RUT</label>
+                                <input type="text" class="form-control" id="rut" value="12.345.678-9">
+                            </div>
+                            <div class="mb-3">
+                                <label for="moneda" class="form-label">Moneda</label>
+                                <select class="form-select" id="moneda">
+                                    <option value="CLP" selected>Pesos Chilenos (CLP)</option>
+                                    <option value="USD">Dólares (USD)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold">Opciones Adicionales</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6>Respaldos</h6>
+                            <p class="small text-muted">Realiza un respaldo de la base de datos.</p>
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download me-2"></i>Generar Respaldo
+                            </button>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <h6>Restaurar Sistema</h6>
+                            <p class="small text-muted">Restaura la base de datos desde un respaldo.</p>
+                            <div class="input-group mb-2">
+                                <input type="file" class="form-control form-control-sm" id="backupFile">
+                                <button class="btn btn-outline-secondary btn-sm" type="button">
+                                    <i class="fas fa-upload me-1"></i> Restaurar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
