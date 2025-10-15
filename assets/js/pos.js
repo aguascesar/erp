@@ -214,7 +214,7 @@ function manejarCambioTipoDocumento() {
     actualizarResumenVenta();
 }
 
-// Función para seleccionar método de pago
+// Función para seleccionar metodo de pago
 function seleccionarMetodoPago(boton) {
     // Quitar selección de todos los botones
     document.querySelectorAll('.metodo-pago').forEach(btn => {
@@ -426,9 +426,31 @@ async function cargarDatosEjemplo() {
             { id: 8, codigo: 'P008', nombre: 'Huevo 1kg', precio: 4500, categoria: 3, stock: 15 },
         ];
         
-        setTimeout(resolve, 500); // Simular tiempo de carga
+        setTimeout(resolve, 300); // Simular tiempo de carga
     });
 }
+    // Función para obtener la ruta de la imagen del producto
+    function obtenerImagenProducto(codigo) {
+        // Mapeo de códigos de producto a nombres de archivo de imagen
+        const imagenes = {
+            "P001": "Pepsi.png",
+            "P002": "Papas.png",
+            "P003": "Jugo.png",
+            "P004": "Galletas.png",
+            "P005": "Agua.png",
+            "P006": "Pan.png",
+            "P007": "Leche.png",
+            "P008": "Huevos.png"
+        };
+        
+        // Obtener el nombre del archivo de imagen o usar uno por defecto
+        const nombreArchivo = imagenes[codigo] || "tech_avatar.svg";
+
+        // Devolver la ruta relativa a la carpeta de imágenes de productos
+        // Usamos una ruta relativa desde la ubicación del archivo pos.js
+        return `../../assets/img/productos/${nombreArchivo}`;
+    }
+
 
 // Renderizar productos en la interfaz
 function renderizarProductos(filtro = '') {
@@ -447,11 +469,20 @@ function renderizarProductos(filtro = '') {
     productosFiltrados.forEach(producto => {
         const productoElement = document.createElement('div');
         productoElement.className = 'producto-card';
+        
+        // Obtener la ruta de la imagen usando la función auxiliar
+        const imagenSrc = obtenerImagenProducto(producto.codigo);
+        
+        // Ruta de respaldo si la imagen no se encuentra
+        const imagenRespaldo = '../../assets/img/tech_avatar.svg';
+        
         productoElement.innerHTML = `
             <div class="producto-img">
-                <img src="https://via.placeholder.com/150" alt="${producto.nombre}">
+                <img src="${imagenSrc}" alt="${producto.nombre}" 
+                     onerror="this.onerror=null; this.src='${imagenRespaldo}'">
             </div>
             <div class="producto-info">
+
                 <div class="producto-nombre">${producto.nombre}</div>
                 <div class="producto-codigo">${producto.codigo}</div>
                 <div class="producto-precio">${formatearMoneda(producto.precio)}</div>
@@ -518,7 +549,7 @@ function filtrarPorCategoria(categoriaId) {
         productoElement.className = 'producto-card';
         productoElement.innerHTML = `
             <div class="producto-img">
-                <img src="https://via.placeholder.com/150" alt="${producto.nombre}">
+                <img src="/assets/img/tech_avatar.svg" alt="${producto.nombre}">
             </div>
             <div class="producto-info">
                 <div class="producto-nombre">${producto.nombre}</div>
@@ -929,7 +960,7 @@ function renderizarProductos(filtro = '') {
         productoElement.className = 'producto-card';
         productoElement.innerHTML = `
             <div class="producto-img">
-                <img src="https://via.placeholder.com/150" alt="${producto.nombre}">
+                <img src="/assets/img/tech_avatar.svg" alt="${producto.nombre}">
             </div>
             <div class="producto-info">
                 <div class="producto-nombre">${producto.nombre}</div>
@@ -996,7 +1027,7 @@ function filtrarPorCategoria(categoriaId) {
         productoElement.className = 'producto-card';
         productoElement.innerHTML = `
             <div class="producto-img">
-                <img src="https://via.placeholder.com/150" alt="${producto.nombre}">
+                <img src="/assets/img/tech_avatar.svg" alt="${producto.nombre}">
             </div>
             <div class="producto-info">
                 <div class="producto-nombre">${producto.nombre}</div>
