@@ -308,24 +308,38 @@
                                 <p class="empty-cart">El carrito está vacío</p>
                             </div>
                             <div class="resumen-total">
-                                <div class="subtotal">
-                                    <span>Subtotal:</span>
-                                    <span id="subtotal">$0.00</span>
-                                </div>
-                                <div class="impuestos">
-                                    <span>Impuestos:</span>
-                                    <span id="impuestos">$0.00</span>
-                                </div>
-                                <div class="total">
-                                    <strong>Total:</strong>
-                                    <strong id="total">$0.00</strong>
-                                </div>
+
+                                <table>
+                                    <tr>
+                                        <td>Subtotal</td>
+                                        <td id="subtotal" >$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Impuestos</td>
+                                        <td id="impuestos">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td id="total">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Comuna</td>
+                                        <td><input type="text" id="comunaCliente"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ciudad</td>
+                                        <td><input type="text" id="ciudadCliente"></td>
+                                    </tr>
+                                </table>
+
                             </div>
+
                             <div class="acciones-carrito">
                                 <button id="pagar" class="btn btn-success btn-block" disabled>Pagar</button>
                                 <button id="cancelarVenta" class="btn btn-danger btn-block">Cancelar</button>
                             </div>
                         </aside>
+
                     </div>
                 </div>
 
@@ -393,17 +407,78 @@
                 </div>
             </div>
         </div>
-        <!-- Scripts -->
-        <script src="/assets/js/pos.js"></script>
-
-
-
-
-
-
-
-
+        <!-- Panel de Pago Lateral -->
+        <div class="panel-pago-overlay" id="panelPagoOverlay"></div>
+        <div class="panel-pago" id="panelPago">
+            <div class="panel-pago-header">
+                <h4>Procesar Pago</h4>
+                <button type="button" class="btn-close" id="cerrarPanelPago"></button>
             </div>
+            <div class="panel-pago-body">
+                <!-- Sección de Método de Pago -->
+                <div class="metodos-pago-section mb-4">
+                    <h5>Método de Pago</h5>
+                    <div class="metodos-pago d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-outline-primary metodo-pago" data-metodo="efectivo">
+                            <i class="fas fa-money-bill-wave me-2"></i>Efectivo
+                        </button>
+                        <button class="btn btn-outline-primary metodo-pago" data-metodo="debito">
+                            <i class="fas fa-credit-card me-2"></i>Débito
+                        </button>
+                        <button class="btn btn-outline-primary metodo-pago" data-metodo="credito">
+                            <i class="far fa-credit-card me-2"></i>Crédito
+                        </button>
+                        <button class="btn btn-outline-primary metodo-pago" data-metodo="transferencia">
+                            <i class="fas fa-exchange-alt me-2"></i>Transferencia
+                        </button>
+                    </div>
+                    
+                    <div id="montoEfectivoContainer" class="mt-3" style="display: none;">
+                        <div class="form-group">
+                            <label for="montoRecibido">Monto Recibido (CLP$)</label>
+                            <input type="number" class="form-control" id="montoRecibido" min="0" step="1" oninput="calcularCambio()">
+                        </div>
+                        <div class="text-end">
+                            <p id="cambio" class="text-muted mb-0">Cambio: $0</p>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Resumen de la Venta -->
+                <div class="resumen-venta mb-4">
+                    <h5>Resumen de la Venta</h5>
+                    <div class="resumen-detalle">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span id="panel-resumen-subtotal">$0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>IVA (19%):</span>
+                            <span id="panel-resumen-iva">$0</span>
+                        </div>
+                        <div class="d-flex justify-content-between border-top pt-2">
+                            <strong>Total:</strong>
+                            <strong id="panel-resumen-total">$0</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-success btn-lg" id="confirmarPago" disabled>
+                        <i class="fas fa-check-circle me-2"></i>Confirmar Pago
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="cancelarPago">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="/assets/vendor/jquery/jquery.min.js"></script>
+        <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="/assets/js/sb-admin-2.min.js"></script>
+        <script src="/assets/js/pos.js"></script>
 </body>
 </html>

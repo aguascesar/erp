@@ -1,9 +1,102 @@
-/* Estilos del modal de éxito */
-.modal {
-    display: none;
+/* Panel de Pago Lateral */
+.panel-pago-overlay {
     position: fixed;
-    z-index: 1000;
+    top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.panel-pago {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 450px;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+}
+
+.panel-pago-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+.panel-pago-header h4 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.panel-pago-body {
+    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
+/* Mostrar panel cuando está activo */
+.panel-pago.active {
+    right: 0;
+}
+
+.panel-pago-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 576px) {
+    .panel-pago {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .panel-pago.active {
+        right: 0;
+    }
+}
+
+/* Estilos para las tarjetas de productos y sus contenedores */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
     top: 0;
     width: 100%;
     height: 100%;
@@ -86,76 +179,127 @@
 .text-success {
     color: #27ae60;
 }
-
 /* Estilos de notificaciones */
 .notificaciones {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 1000;
+    z-index: 1100;
     max-width: 350px;
+    width: 100%;
 }
 
 .notificacion {
     padding: 15px 20px;
     margin-bottom: 15px;
-    border-radius: 4px;
-    color: white;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    animation: slideIn 0.3s ease-out;
     transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.3s ease forwards;
+    background-color: #2c3e50; /* Fondo oscuro por defecto */
+    border-left: 4px solid #3498db; /* Borde lateral azul por defecto */
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.notificacion-contenido {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.notificacion-contenido i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.notificacion-contenido span {
+    flex-grow: 1;
+    margin-right: 10px;
 }
 
 .notificacion-close {
     background: none;
     border: none;
     color: white;
+    font-size: 16px;
     cursor: pointer;
-    font-size: 1.2rem;
-    margin-left: 15px;
+    padding: 0;
     opacity: 0.8;
+    line-height: 1;
 }
 
 .notificacion-close:hover {
     opacity: 1;
 }
 
+/* Asegurar que el texto sea visible en todos los tipos de notificación */
+.notificacion {
+    background-color: #2c3e50; /* Fondo oscuro por defecto */
+    color: #000000; /* Texto blanco */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.notificacion .notificacion-close,
+.notificacion .notificacion-contenido i {
+    color: #ffffff; /* Iconos y botón de cierre en blanco */
+}
+
+/* Estilos específicos para cada tipo de notificación */
 .notificacion-success {
-    background-color: var(--success-color);
+    background-color: #27ae60; /* Verde más oscuro */
+    border-left: 4px solid #2ecc71;
 }
 
 .notificacion-error {
-    background-color: var(--danger-color);
+    background-color: #c0392b; /* Rojo más oscuro */
+    border-left: 4px solid #e74c3c;
 }
 
 .notificacion-warning {
-    background-color: #ffc107;
-    color: #212529;
+    background-color: #f39c12; /* Naranja oscuro */
+    color: #2c3e50; /* Texto oscuro para mejor contraste */
+    border-left: 4px solid #f1c40f;
+}
+
+.notificacion-warning .notificacion-close,
+.notificacion-warning .notificacion-contenido i {
+    color: #2c3e50; /* Iconos oscuros para contraste */
 }
 
 .notificacion-info {
-    background-color: #17a2b8;
+    background-color: #2980b9; /* Azul más oscuro */
+    border-left: 4px solid #3498db;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+/* Asegurar que el texto sea siempre visible */
+.notificacion span {
+    color: inherit;
 }
 
+/* Asegurar que el contenedor de notificaciones esté por encima de otros elementos */
+#notificaciones {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+}
+
+/* Animación para ocultar notificaciones */
 @keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateX(0);
-    }
     to {
         opacity: 0;
         transform: translateX(100%);
@@ -165,13 +309,18 @@
 /* Estilos generales */
 :root {
     --primary-color: #4361ee;
+    --primary-hover: #3a56d4;
     --secondary-color: #3f37c9;
     --success-color: #4bb543;
     --danger-color: #dc3545;
+    --warning-color: #ffc107;
     --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
     --dark-gray: #343a40;
     --border-color: #dee2e6;
-    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --border-radius: 0.5rem;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 * {
@@ -190,11 +339,501 @@ body {
 .pos-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     max-width: 1600px;
     margin: 0 auto;
-    background: white;
+    background: #f5f7fa;
     box-shadow: var(--shadow);
+}
+
+/* Estilos para la sección de productos */
+#listaProductos {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -0.75rem;
+    padding: 1rem 0;
+}
+
+/* Contenedor de la grilla de productos */
+#listaProductos > .col-md-4 {
+    padding: 0 0.75rem 1.5rem;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    #listaProductos > .col-md-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (min-width: 992px) {
+    #listaProductos > .col-md-4 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+@media (min-width: 1200px) {
+    #listaProductos > .col-md-4 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+/* Estilos para las tarjetas de productos */
+.producto-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    position: relative;
+    min-width: 0; /* Asegura que el contenido no desborde */
+}
+
+.producto-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(67, 97, 238, 0) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.producto-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    border-color: rgba(67, 97, 238, 0.2);
+}
+
+.producto-card:hover::before {
+    opacity: 1;
+}
+
+/* Efecto de elevación al hacer hover */
+@keyframes cardLift {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(-8px); }
+}
+
+.producto-card:hover {
+    animation: cardLift 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Contenedor de la imagen del producto */
+.producto-imagen-contenedor {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.producto-card:hover .producto-imagen-contenedor {
+    background: linear-gradient(145deg, #f1f3f5 0%, #e9ecef 100%);
+}
+
+/* Estilo para la imagen del producto */
+.producto-imagen {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.producto-card:hover .producto-imagen {
+    transform: scale(1.05);
+}
+
+/* Estilo para cuando no hay imagen */
+.sin-imagen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #adb5bd;
+    padding: 2rem 1rem;
+    text-align: center;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.02),
+        rgba(0, 0, 0, 0.02) 10px,
+        rgba(0, 0, 0, 0.03) 10px,
+        rgba(0, 0, 0, 0.03) 20px
+    );
+    transition: all 0.3s ease;
+}
+
+.producto-card:hover .sin-imagen {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(67, 97, 238, 0.03),
+        rgba(67, 97, 238, 0.03) 10px,
+        rgba(67, 97, 238, 0.05) 10px,
+        rgba(67, 97, 238, 0.05) 20px
+    );
+}
+
+.sin-imagen i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.producto-card:hover .sin-imagen i {
+    color: #ced4da;
+    transform: scale(1.1);
+}
+
+.sin-imagen span {
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    color: #adb5bd;
+    font-weight: 500;
+}
+
+/* Contenido de la tarjeta */
+.producto-card .card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background: white;
+    position: relative;
+    z-index: 1;
+    min-width: 0; /* Asegura que el contenido no desborde */
+}
+
+.producto-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #2c3e50;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+    word-wrap: break-word;
+    white-space: normal;
+    min-height: 3.2em;
+}
+
+.producto-card:hover .card-title {
+    color: var(--primary-color);
+}
+
+.producto-card .card-text {
+    font-size: 0.95rem;
+    color: #5a6268;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+    min-height: 3.2em;
+}
+
+.producto-card:hover .card-text {
+    color: #5a6268;
+}
+
+/* Estilos para el precio y stock */
+.producto-card .d-flex.justify-content-between {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.producto-card .h5 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #4361ee;
+    margin-bottom: 0;
+    letter-spacing: -0.5px;
+}
+
+.producto-card .precio::before {
+    content: 'S/.';
+    font-size: 0.8em;
+    opacity: 0.8;
+    margin-right: 2px;
+}
+
+/* Badge de stock */
+.producto-card .badge {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+}
+
+.producto-card .bg-success {
+    background-color: #e6f7ee !important;
+    color: #28a745 !important;
+}
+
+.producto-card .bg-danger {
+    background-color: #fdecea !important;
+    color: #dc3545 !important;
+}
+
+/* Efecto de pulso para stock bajo */
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+.producto-card .stock-badge.poco-stock {
+    animation: pulse 2s infinite;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+    margin-bottom: 1.5rem;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.15);
+}
+
+/* Sección de categorías */
+.categorias {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+}
+
+.categoria-btn {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #495057;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.categoria-btn:hover {
+    background-color: var(--light-gray);
+}
+
+.categoria-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .productos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+    }
+    
+    .producto-imagen-contenedor {
+        height: 140px;
+    }
+    
+    .producto-card .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Estilos para el carrito */
+.carrito-panel {
+    background: white;
+    border-left: 1px solid var(--border-color);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.carrito-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding-right: 0.5rem;
+}
+
+.carrito-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.carrito-item:last-child {
+    border-bottom: none;
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-nombre {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.item-precio {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.item-cantidad {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+}
+
+.cantidad-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.cantidad-btn:hover {
+    background-color: var(--light-gray);
+}
+
+.item-cantidad span {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.item-total {
+    font-weight: 600;
+    min-width: 70px;
+    text-align: right;
+}
+
+/* Resumen de la venta */
+.resumen-venta {
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.resumen-venta h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.resumen-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.resumen-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Botones de acción */
+.acciones-carrito {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.acciones-carrito .btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.acciones-carrito .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.acciones-carrito .btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.acciones-carrito .btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.acciones-carrito .btn-danger:hover {
+    background-color: #c82333;
 }
 
 /* Encabezado */
@@ -285,6 +924,75 @@ body {
 .producto-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow);
+}
+
+/* Estilos para las imágenes de productos */
+.producto-imagen {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    background-color: #f8f9fa;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Contenedor de imagen para mantener la relación de aspecto */
+.producto-imagen-contenedor {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+/* Estilo para cuando la imagen está cargando */
+.producto-imagen-contenedor.cargando::after {
+    content: 'Cargando...';
+    position: absolute;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Efecto hover en las imágenes */
+.producto-card:hover .producto-imagen {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* Estilo para cuando no hay imagen */
+.sin-imagen {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 0.9rem;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Ajustes para imágenes en dispositivos móviles */
+@media (max-width: 768px) {
+    .producto-imagen,
+    .producto-imagen-contenedor,
+    .sin-imagen {
+        height: 140px;
+    }
+}
+
+/* Estilos para la vista detallada de producto */
+.modal-imagen-producto {
+    max-width: 100%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    margin: 0 auto 20px;
+    display: block;
 }
 
 .producto-img {

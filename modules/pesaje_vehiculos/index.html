@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pesaje - ERP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/pesaje_vehiculos.css">
+</head>
+<body>
+    <div class="pesaje-container">
+        <header class="pesaje-header">
+            <h1><i class="fas fa-truck-loading"></i> Registro de Pesaje de Vehículos</h1>
+            <div class="header-actions">
+                <button id="btnNuevoPesaje" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nuevo Pesaje
+                </button>
+                <div class="date-filter">
+                    <input type="date" id="fechaInicio" class="form-control">
+                    <span>a</span>
+                    <input type="date" id="fechaFin" class="form-control">
+                    <select id="filtroEstado" class="form-control">
+                        <option value="">Todos los estados</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="completado">Completado</option>
+                        <option value="anulado">Anulado</option>
+                    </select>
+                    <button id="btnFiltrar" class="btn btn-secondary">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="pesaje-content">
+            <div class="resumen-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Resumen del Día</h3>
+                        <span id="fechaResumen">21/10/2023</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="resumen-item">
+                            <span class="resumen-label">Total Pesajes:</span>
+                            <span class="resumen-value" id="totalPesajes">0</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Peso Total:</span>
+                            <span class="resumen-value" id="pesoTotal">0 kg</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Pendientes:</span>
+                            <span class="resumen-value text-warning" id="pendientes">0</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Anulados:</span>
+                            <span class="resumen-value text-danger" id="anulados">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h3>Vehículos Recientes</h3>
+                    </div>
+                    <div class="card-body" id="vehiculosRecientes">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No hay vehículos recientes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pesajes-container">
+                <div class="pesajes-header">
+                    <h2>Registro de Pesajes</h2>
+                    <div class="actions">
+                        <div class="search-box">
+                            <input type="text" id="buscarPesaje" class="form-control" placeholder="Buscar por patente...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <button id="btnExportarExcel" class="btn btn-export">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="tblPesajes" class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha/Hora</th>
+                                <th>Patente</th>
+                                <th>Conductor</th>
+                                <th>Peso Bruto</th>
+                                <th>Peso Tara</th>
+                                <th>Peso Neto</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblPesajesBody">
+                            <!-- Datos cargados dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button id="btnAnterior" class="btn btn-pagination">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span id="paginacionInfo">Página 1 de 1</span>
+                    <button id="btnSiguiente" class="btn btn-pagination">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Pesaje -->
+    <div id="modalNuevoPesaje" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registrar Nuevo Pesaje</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formNuevoPesaje">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="fechaPesaje">Fecha y Hora *</label>
+                            <input type="datetime-local" id="fechaPesaje" class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="tipoPesaje">Tipo de Pesaje *</label>
+                            <select id="tipoPesaje" class="form-control" required>
+                                <option value="entrada">Entrada (Bruto)</option>
+                                <option value="salida">Salida (Tara)</option>
+                                <option value="completo">Pesaje Completo</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="patente">Patente del Vehículo *</label>
+                            <input type="text" id="patente" class="form-control" placeholder="Ej: AB123CD" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="conductor">Conductor</label>
+                            <input type="text" id="conductor" class="form-control" placeholder="Nombre del conductor">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="pesoBruto">Peso Bruto (kg)</label>
+                            <div class="input-group">
+                                <input type="number" id="pesoBruto" class="form-control" placeholder="0.00" step="0.01" min="0">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="pesoTara">Peso Tara (kg)</label>
+                            <div class="input-group">
+                                <input type="number" id="pesoTara" class="form-control" placeholder="0.00" step="0.01" min="0">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="pesoNeto">Peso Neto (kg)</label>
+                            <div class="input-group">
+                                <input type="number" id="pesoNeto" class="form-control" placeholder="0.00" readonly>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="producto">Producto Transportado</label>
+                        <select id="producto" class="form-control">
+                            <option value="">Seleccione un producto</option>
+                            <option value="arroz">Arroz</option>
+                            <option value="maiz">Maíz</option>
+                            <option value="trigo">Trigo</option>
+                            <option value="soja">Soja</option>
+                            <option value="cebada">Cebada</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="proveedor">Proveedor/Cliente</label>
+                            <input type="text" id="proveedor" class="form-control" placeholder="Nombre del proveedor o cliente">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="documento">N° Documento</label>
+                            <input type="text" id="documento" class="form-control" placeholder="N° de factura o remito">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea id="observaciones" class="form-control" rows="3" placeholder="Notas adicionales sobre el pesaje"></textarea>
+                    </div>
+                    
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="esExportacion" class="form-check-input">
+                        <label class="form-check-label" for="esExportacion">Pesaje para exportación</label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancelarPesaje">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Pesaje</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ver Pesaje -->
+    <div id="modalVerPesaje" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalle del Pesaje <span id="pesajeId">#12345</span></h3>
+                <div class="header-actions">
+                    <button id="btnImprimir" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Imprimir
+                    </button>
+                    <span class="close">&times;</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="pesaje-detail">
+                    <div class="detail-header">
+                        <div class="detail-item">
+                            <span class="detail-label">Patente:</span>
+                            <span class="detail-value" id="detallePatente">AB123CD</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Fecha/Hora:</span>
+                            <span class="detail-value" id="detalleFecha">21/10/2023 14:30</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Estado:</span>
+                            <span class="detail-value badge badge-success" id="detalleEstado">Completado</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Datos del Vehículo</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Conductor:</span>
+                                <span class="detail-value" id="detalleConductor">Juan Pérez</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Producto:</span>
+                                <span class="detail-value" id="detalleProducto">Trigo</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Proveedor/Cliente:</span>
+                                <span class="detail-value" id="detalleProveedor">Agropecuaria S.A.</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Documento:</span>
+                                <span class="detail-value" id="detalleDocumento">FAC-001-0001234</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Pesajes</h4>
+                        <div class="pesajes-detail">
+                            <div class="pesaje-item">
+                                <div class="pesaje-label">Peso Bruto:</div>
+                                <div class="pesaje-value" id="detallePesoBruto">25,450.50 kg</div>
+                                <div class="pesaje-time" id="detalleHoraBruto">21/10/2023 08:30</div>
+                            </div>
+                            <div class="pesaje-item">
+                                <div class="pesaje-label">Peso Tara:</div>
+                                <div class="pesaje-value" id="detallePesoTara">12,350.25 kg</div>
+                                <div class="pesaje-time" id="detalleHoraTara">21/10/2023 09:45</div>
+                            </div>
+                            <div class="pesaje-item total">
+                                <div class="pesaje-label">Peso Neto:</div>
+                                <div class="pesaje-value" id="detallePesoNeto">13,100.25 kg</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Observaciones</h4>
+                        <div class="observaciones" id="detalleObservaciones">
+                            Carga en buen estado, sin novedades.
+                        </div>
+                    </div>
+                    
+                    <div class="detail-footer">
+                        <div class="qr-code">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=pesaje-12345" alt="Código QR">
+                            <span>ID: PES-2023-12345</span>
+                        </div>
+                        <div class="signature">
+                            <div class="signature-line"></div>
+                            <span>Firma del Responsable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/pesaje_vehiculos.js"></script>
+</body>
+</html>

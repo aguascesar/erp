@@ -1,0 +1,340 @@
+/* Estilos generales del módulo de inventario */
+.inventario-container {
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.inventario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.inventario-header h1 {
+    margin: 0;
+    color: #333;
+}
+
+.inventario-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-group {
+    display: flex;
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    text-decoration: none;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #16181b;
+    background-color: #f8f9fa;
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}
+
+.btn-export {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-export:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+}
+
+/* Estilos para los botones */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn i {
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.btn-secondary {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #0b7dda;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+/* Estilos para los filtros */
+.inventario-filtros {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filtro-grupo {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.filtro-grupo label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.filtro-grupo input,
+.filtro-grupo select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Estilos para la tabla de inventario */
+.inventario-tabla-container {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.tabla-inventario {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-inventario th,
+.tabla-inventario td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.tabla-inventario th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.tabla-inventario tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.estado-stock {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.estado-disponible {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.estado-bajo {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.estado-agotado {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.cerrar-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.cerrar-modal:hover {
+    color: #333;
+}
+
+/* Estilos para el formulario */
+#formProducto {
+    margin-top: 20px;
+}
+
+.form-grupo {
+    margin-bottom: 15px;
+}
+
+.form-grupo label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-grupo input[type="text"],
+.form-grupo input[type="number"],
+.form-grupo select,
+.form-grupo textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-grupo textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-fila {
+    display: flex;
+    gap: 15px;
+}
+
+.form-fila .form-grupo {
+    flex: 1;
+}
+
+.form-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .inventario-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .inventario-filtros {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-fila {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .tabla-inventario {
+        display: block;
+        overflow-x: auto;
+    }
+}

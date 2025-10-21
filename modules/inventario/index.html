@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - ERP</title>
+    <link rel="stylesheet" href="../../assets/css/inventario.css">
+    <!-- Bibliotecas para exportación -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+    <div class="inventario-container">
+        <header class="inventario-header">
+            <h1>Gestión de Inventario</h1>
+            <div class="inventario-actions">
+                <div class="btn-group">
+                    <button id="nuevoProducto" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Producto
+                    </button>
+                    <button id="actualizarInventario" class="btn btn-secondary">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button id="btnExportar" class="btn btn-export dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" id="exportarExcel"><i class="fas fa-file-excel"></i> Exportar a Excel</a></li>
+                        <li><a class="dropdown-item" href="#" id="exportarPDF"><i class="fas fa-file-pdf"></i> Exportar a PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="inventario-filtros">
+            <div class="filtro-grupo">
+                <label for="buscarProducto">Buscar:</label>
+                <input type="text" id="buscarProducto" placeholder="Código o nombre del producto">
+            </div>
+            <div class="filtro-grupo">
+                <label for="filtroCategoria">Categoría:</label>
+                <select id="filtroCategoria">
+                    <option value="">Todas las categorías</option>
+                    <!-- Las categorías se cargarán dinámicamente -->
+                </select>
+            </div>
+        </div>
+
+        <div class="inventario-tabla-container">
+            <table id="tablaInventario" class="tabla-inventario">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Stock Actual</th>
+                        <th>Precio Compra</th>
+                        <th>Precio Venta</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los datos se cargarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para nuevo/editar producto -->
+    <div id="modalProducto" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal">&times;</span>
+            <h2 id="tituloModal">Nuevo Producto</h2>
+            <form id="formProducto">
+                <input type="hidden" id="productoId">
+                
+                <div class="form-grupo">
+                    <label for="codigo">Código *</label>
+                    <input type="text" id="codigo" required>
+                </div>
+                
+                <div class="form-grupo">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                
+                <div class="form-grupo">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" rows="3"></textarea>
+                </div>
+                
+                <div class="form-grupo">
+                    <label for="categoria">Categoría *</label>
+                    <select id="categoria" required>
+                        <!-- Las categorías se cargarán dinámicamente -->
+                    </select>
+                </div>
+                
+                <div class="form-fila">
+                    <div class="form-grupo">
+                        <label for="precioCompra">Precio Compra *</label>
+                        <input type="number" id="precioCompra" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-grupo">
+                        <label for="precioVenta">Precio Venta *</label>
+                        <input type="number" id="precioVenta" step="0.01" min="0" required>
+                    </div>
+                </div>
+                
+                <div class="form-fila">
+                    <div class="form-grupo">
+                        <label for="stock">Stock Inicial</label>
+                        <input type="number" id="stock" min="0" value="0">
+                    </div>
+                    
+                    <div class="form-grupo">
+                        <label for="stockMinimo">Stock Mínimo</label>
+                        <input type="number" id="stockMinimo" min="0" value="0">
+                    </div>
+                </div>
+                
+                <div class="form-acciones">
+                    <button type="button" id="cancelarProducto" class="btn btn-secundario">Cancelar</button>
+                    <button type="submit" class="btn btn-primario">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../assets/js/inventario.js"></script>
+</body>
+</html>
