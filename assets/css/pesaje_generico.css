@@ -1,11 +1,28 @@
 /* Estilos generales */
 body {
-    background-color: #f8f9fa;
+    background-image: url('../img/pesaje-bg.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-fluid {
+    background-color: rgba(255, 255, 255, 0.75);
+    min-height: calc(100vh - 40px);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
 }
 
 /* Estilo para las tarjetas */
 .card {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
     border: none;
     border-radius: 10px;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
@@ -24,6 +41,7 @@ body {
 
 /* Estilo para la tabla */
 .table {
+    background-color: rgba(255, 255, 255, 0.8);
     margin-bottom: 0;
 }
 
@@ -39,6 +57,7 @@ body {
 
 /* Estilo para los botones */
 .btn {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 0.375rem 0.75rem;
     font-weight: 500;
     border-radius: 0.25rem;

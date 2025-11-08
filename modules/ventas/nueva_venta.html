@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Venta - Módulo de Ventas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../../assets/css/ventas.css">
+    <style>
+        .product-card {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        .product-card.selected {
+            border: 2px solid #4e73df;
+            background-color: rgba(78, 115, 223, 0.05);
+        }
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="content-wrapper" class="ventas-container">
+        <div class="container-fluid">
+            <!-- Encabezado -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Nueva Venta</h1>
+                <div>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                    <button id="btnGuardarVenta" class="btn btn-success">
+                        <i class="fas fa-save"></i> Guardar Venta
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Columna de productos -->
+                <div class="col-lg-8">
+                    <!-- Búsqueda y filtros -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Buscar productos..." id="buscarProducto">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" id="filtroCategoria">
+                                        <option value="">Todas las categorías</option>
+                                        <option value="1">Electrónica</option>
+                                        <option value="2">Ropa</option>
+                                        <option value="3">Alimentos</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de productos -->
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Productos Disponibles</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" id="listaProductos">
+                                <!-- Los productos se cargarán aquí dinámicamente -->
+                                <div class="col-md-4 mb-4">
+                                    <div class="card product-card h-100">
+                                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Producto de Ejemplo</h6>
+                                            <p class="card-text text-muted small">Código: PROD-001</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-0 text-primary">$99.99</h5>
+                                                <span class="badge bg-success">En stock: 50</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Más productos... -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna del carrito -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Resumen de Venta</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Datos del cliente -->
+                            <div class="mb-4">
+                                <label class="form-label">Cliente</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Buscar cliente..." id="buscarCliente">
+                                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#modalNuevoCliente">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">Cliente: <span id="nombreCliente">Cliente no seleccionado</span></div>
+                            </div>
+
+                            <!-- Lista de productos en el carrito -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Productos</h6>
+                                    <span class="badge bg-primary rounded-pill" id="contadorProductos">0</span>
+                                </div>
+                                <div id="listaCarrito" class="mb-3">
+                                    <!-- Los productos del carrito se mostrarán aquí -->
+                                    <div class="text-muted text-center py-3">
+                                        <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                                        <p>No hay productos en el carrito</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Resumen de totales -->
+                            <div class="border-top pt-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span id="subtotal">$0.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Impuestos (19%):</span>
+                                    <span id="impuestos">$0.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between fw-bold fs-5">
+                                    <span>Total:</span>
+                                    <span id="total">$0.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Método de pago -->
+                            <div class="mt-4">
+                                <label class="form-label">Método de pago</label>
+                                <select class="form-select mb-3" id="metodoPago">
+                                    <option value="efectivo">Efectivo</option>
+                                    <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                    <option value="transferencia">Transferencia Bancaria</option>
+                                </select>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" id="btnPagar">
+                                        <i class="fas fa-credit-card me-2"></i>Procesar Pago
+                                    </button>
+                                    <button class="btn btn-outline-secondary" id="btnGuardarBorrador">
+                                        <i class="fas fa-save me-2"></i>Guardar como Borrador
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Cliente -->
+    <div class="modal fade" id="modalNuevoCliente" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formNuevoCliente">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Identificación</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar Cliente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts personalizados -->
+    <script src="../../assets/js/ventas.js"></script>
+</body>
+</html>

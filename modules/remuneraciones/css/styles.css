@@ -1,4 +1,45 @@
 /* Estilos generales */
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../../../assets/img/remuneraciones-bg.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+/* Asegurar que el contenido principal tenga fondo semitransparente */
+#content-wrapper {
+    background-color: rgba(255, 255, 255, 0.9);
+    min-height: 100vh;
+}
+
+/* Ajustar el contenedor principal */
+#content {
+    background-color: transparent;
+}
+
+/* Mejorar la legibilidad de las tarjetas */
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+/* Mejorar la legibilidad de la barra superior */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
 :root {
     --primary-color: #4e73df;
     --secondary-color: #858796;
@@ -9,10 +50,11 @@
     --warning-color: #f6c23e;
     --danger-color: #e74a3b;
     --info-color: #36b9cc;
-    --sidebar-dark: #4e73df;
-    --sidebar-dark-nav: rgba(255, 255, 255, .8);
-    --sidebar-dark-hover: rgba(255, 255, 255, .9);
+    --sidebar-dark: rgba(78, 115, 223, 0.95);
+    --sidebar-dark-nav: rgba(255, 255, 255, 0.8);
+    --sidebar-dark-hover: rgba(255, 255, 255, 0.9);
     --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    --sidebar-width: 12.5rem;
 }
 
 * {
