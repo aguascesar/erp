@@ -679,6 +679,26 @@
         </div>
     </section>
 
+    <!-- Reproductor de audio -->
+    <div class="audio-player fixed-bottom d-flex justify-content-end p-3" style="z-index: 1000;">
+        <div class="bg-dark text-white p-3 rounded-pill shadow-lg" style="width: 300px;">
+            <div class="d-flex align-items-center">
+                <button id="playPauseBtn" class="btn btn-link text-white p-0 me-3">
+                    <i class="fas fa-play"></i>
+                </button>
+                <span class="me-3 small">Música de fondo</span>
+                <input type="range" class="form-range volume-slider" id="volumeControl" min="0" max="1" step="0.1" value="0.5" style="width: 100px;">
+                <i class="fas fa-volume-up ms-2"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element sin autoplay -->
+    <audio id="backgroundMusic" loop>
+        <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
     <!-- Footer -->
     <footer class="footer py-5 bg-dark text-white">
         <div class="container">
@@ -808,6 +828,43 @@
 
     <!-- Estilos para el tema oscuro -->
     <script>
+        // Control del reproductor de audio
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('backgroundMusic');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const volumeControl = document.getElementById('volumeControl');
+            const playIcon = playPauseBtn.querySelector('i');
+            
+            // Configurar volumen inicial
+            audio.volume = 0.5;
+            
+            // Control de reproducción/pausa
+            playPauseBtn.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play()
+                        .then(() => {
+                            playIcon.classList.replace('fa-play', 'fa-pause');
+                        })
+                        .catch(error => {
+                            console.log("Error al reproducir:", error);
+                        });
+                } else {
+                    audio.pause();
+                    playIcon.classList.replace('fa-pause', 'fa-play');
+                }
+            });
+            
+            // Control de volumen
+            volumeControl.addEventListener('input', function() {
+                audio.volume = parseFloat(this.value);
+            });
+            
+            // Actualizar icono cuando termine la reproducción
+            audio.addEventListener('ended', function() {
+                playIcon.classList.replace('fa-pause', 'fa-play');
+            });
+        });
+        
         // Efecto de cambio de color al hacer scroll
         window.addEventListener('scroll', function () {
             if (window.scrollY > 50) {
