@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informes Financieros - Módulo de Finanzas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Estilos personalizados -->
+    <link href="/erp/assets/css/custom.css" rel="stylesheet">
+    <style>
+        /* Estilos generales */
+        body {
+            font-size: 16px;
+            line-height: 1.6;
+            background: url('/assets/img/dashboard-bg.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 2rem;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.92);
+            z-index: -1;
+        }
+        
+        .module-header {
+            background: linear-gradient(87deg, rgba(94, 114, 228, 0.95) 0, rgba(130, 94, 228, 0.95) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-report {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .card-report:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .report-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #5e72e4;
+            transition: all 0.3s ease;
+        }
+        
+        .card-report:hover .report-icon {
+            transform: scale(1.1);
+            color: #4a5bbf;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado del Módulo -->
+    <div class="module-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-chart-pie me-2"></i>Informes Financieros</h1>
+                    <p class="mb-0">Genere y visualice informes financieros detallados</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="/erp/modules/finanzas/" class="btn btn-outline-light">
+                        <i class="fas fa-arrow-left me-1"></i> Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="container mt-4">
+        <!-- Filtros -->
+        <div class="card card-report mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Filtros del Informe</h5>
+            </div>
+            <div class="card-body">
+                <form id="reportFilters">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="reportType" class="form-label">Tipo de Informe</label>
+                            <select class="form-select" id="reportType" required>
+                                <option value="">Seleccione un tipo de informe</option>
+                                <option value="ingresos">Ingresos</option>
+                                <option value="gastos">Gastos</option>
+                                <option value="rentabilidad">Rentabilidad</option>
+                                <option value="flujo-caja">Flujo de Caja</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="dateRange" class="form-label">Rango de Fechas</label>
+                            <input type="text" class="form-control" id="dateRange" placeholder="Seleccione un rango de fechas">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100" id="generateReportBtn">
+                                <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner" role="status" aria-hidden="true"></span>
+                                <span id="buttonText">
+                                    <i class="fas fa-sync-alt me-1"></i> Generar Informe
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Contenedor para la carga -->
+        <div id="loadingContainer" class="text-center py-5 d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2">Cargando datos del informe...</p>
+        </div>
+        
+        <!-- Contenedor para el contenido del informe (se llenará dinámicamente) -->
+        <div id="reportContent"></div>
+
+        <!-- Sección de Informes -->
+        <div class="row">
+            <!-- Resumen General -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-report">
+                    <div class="card-body text-center">
+                        <div class="report-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h5 class="card-title">Ingresos Totales</h5>
+                        <h3 class="mb-3">$125,450</h3>
+                        <p class="text-success mb-0"><i class="fas fa-arrow-up me-1"></i> 12.5% vs período anterior</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card card-report">
+                    <div class="card-body text-center">
+                        <div class="report-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h5 class="card-title">Gastos Totales</h5>
+                        <h3 class="mb-3">$78,920</h3>
+                        <p class="text-danger mb-0"><i class="fas fa-arrow-up me-1"></i> 5.2% vs período anterior</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card card-report">
+                    <div class="card-body text-center">
+                        <div class="report-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5 class="card-title">Rentabilidad</h5>
+                        <h3 class="mb-3">37.1%</h3>
+                        <p class="text-success mb-0"><i class="fas fa-arrow-up me-1"></i> 2.3% vs período anterior</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row">
+            <div class="col-md-8 mb-4">
+                <div class="card card-report">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tendencia de Ingresos vs Gastos</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="incomeExpenseChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card card-report">
+                    <div class="card-header">
+                        <h5 class="mb-0">Distribución de Gastos</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="expenseDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Detalles -->
+        <div class="card card-report">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Detalle de Transacciones</h5>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="fas fa-download me-1"></i> Exportar
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-print me-1"></i> Imprimir
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Categoría</th>
+                                <th class="text-end">Monto</th>
+                                <th class="text-end">Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15/11/2023</td>
+                                <td>Venta Producto A</td>
+                                <td><span class="badge bg-success">Ingreso</span></td>
+                                <td class="text-end text-success">$12,500</td>
+                                <td class="text-end">$45,200</td>
+                            </tr>
+                            <tr>
+                                <td>14/11/2023</td>
+                                <td>Pago a Proveedor</td>
+                                <td><span class="badge bg-danger">Gasto</span></td>
+                                <td class="text-end text-danger">-$8,750</td>
+                                <td class="text-end">$32,700</td>
+                            </tr>
+                            <!-- Más filas de ejemplo -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <!-- Intersection Observer Polyfill para navegadores antiguos -->
+    <script src="https://cdn.jsdelivr.net/npm/intersection-observer@0.12.0/intersection-observer.js"></script>
+    
+    <script>
+        // Variables globales
+        let incomeExpenseChart = null;
+        let expenseDistributionChart = null;
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let isLoading = false;
+        
+        // Inicializar date range picker
+        flatpickr("#dateRange", {
+            mode: "range",
+            dateFormat: "d/m/Y",
+            locale: "es",
+            defaultDate: [new Date().setMonth(new Date().getMonth() - 1), new Date()]
+        });
+        
+        // Plantilla para el contenido del informe
+        const reportTemplate = `
+            <!-- Resumen General -->
+            <div class="row" id="summaryCards">
+                <!-- Se llenará dinámicamente -->
+            </div>
+
+            <!-- Gráficos -->
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <div class="card card-report">
+                        <div class="card-header">
+                            <h5 class="mb-0">Tendencia de Ingresos vs Gastos</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="incomeExpenseChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card card-report">
+                        <div class="card-header">
+                            <h5 class="mb-0">Distribución de Gastos</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="expenseDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Detalles -->
+            <div class="card card-report">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Detalle de Transacciones</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-secondary me-2" id="exportPdfBtn">
+                            <i class="fas fa-file-pdf me-1"></i> Exportar PDF
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary me-2" id="exportExcelBtn">
+                            <i class="fas fa-file-excel me-1"></i> Exportar Excel
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" id="printBtn">
+                            <i class="fas fa-print me-1"></i> Imprimir
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Descripción</th>
+                                    <th>Categoría</th>
+                                    <th class="text-end">Monto</th>
+                                    <th class="text-end">Saldo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsBody">
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3" id="loadMoreContainer">
+                        <button class="btn btn-outline-primary" id="loadMoreBtn">
+                            <span class="spinner-border spinner-border-sm d-none" id="loadMoreSpinner" role="status" aria-hidden="true"></span>
+                            <span id="loadMoreText">Cargar más transacciones</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Observador de intersección para carga infinita -->
+            <div id="scrollObserver" style="height: 20px; margin: 10px 0;"></div>
+        `;
+
+        // Datos de ejemplo (en un entorno real, estos vendrían de una API)
+        const sampleTransactions = [
+            { fecha: '15/11/2023', descripcion: 'Venta Producto A', categoria: 'Ventas', monto: 12500, tipo: 'ingreso', saldo: 45200 },
+            { fecha: '14/11/2023', descripcion: 'Pago a Proveedor', categoria: 'Proveedores', monto: -8750, tipo: 'gasto', saldo: 32700 },
+            { fecha: '13/11/2023', descripcion: 'Servicio de Internet', categoria: 'Servicios', monto: -4500, tipo: 'gasto', saldo: 41450 },
+            { fecha: '12/11/2023', descripcion: 'Venta Producto B', categoria: 'Ventas', monto: 9800, tipo: 'ingreso', saldo: 45950 },
+            { fecha: '11/11/2023', descripcion: 'Nómina', categoria: 'Personal', monto: -22000, tipo: 'gasto', saldo: 36150 },
+            { fecha: '10/11/2023', descripcion: 'Venta Servicio', categoria: 'Servicios', monto: 15000, tipo: 'ingreso', saldo: 58150 },
+            { fecha: '09/11/2023', descripcion: 'Alquiler', categoria: 'Gastos Fijos', monto: -12000, tipo: 'gasto', saldo: 43150 },
+            { fecha: '08/11/2023', descripcion: 'Venta Producto C', categoria: 'Ventas', monto: 7600, tipo: 'ingreso', saldo: 55150 },
+            { fecha: '07/11/2023', descripcion: 'Materiales de Oficina', categoria: 'Suministros', monto: -3200, tipo: 'gasto', saldo: 47550 },
+            { fecha: '06/11/2023', descripcion: 'Venta al por Mayor', categoria: 'Ventas', monto: 25000, tipo: 'ingreso', saldo: 50750 },
+            // Más datos de ejemplo...
+        ];
+
+        // Función para formatear moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amount);
+        }
+
+        // Función para simular carga de datos (en un entorno real, esto sería una llamada a la API)
+        async function fetchTransactions(page = 1, limit = 10) {
+            // Simular retraso de red
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            const start = (page - 1) * limit;
+            const end = start + limit;
+            return {
+                data: sampleTransactions.slice(0, end),
+                total: sampleTransactions.length,
+                page,
+                hasMore: end < sampleTransactions.length
+            };
+        }
+
+        // Función para renderizar transacciones
+        async function renderTransactions(page = 1, append = false) {
+            if (isLoading) return;
+            
+            isLoading = true;
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const loadMoreSpinner = document.getElementById('loadMoreSpinner');
+            const loadMoreText = document.getElementById('loadMoreText');
+            
+            if (loadMoreBtn) {
+                loadMoreBtn.disabled = true;
+                loadMoreSpinner.classList.remove('d-none');
+                loadMoreText.textContent = 'Cargando...';
+            }
+            
+            try {
+                const response = await fetchTransactions(page, itemsPerPage);
+                const transactionsBody = document.getElementById('transactionsBody');
+                
+                if (!append) {
+                    transactionsBody.innerHTML = '';
+                }
+                
+                // Renderizar transacciones
+                response.data.forEach((tx, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${tx.fecha}</td>
+                        <td>${tx.descripcion}</td>
+                        <td>${tx.categoria}</td>
+                        <td class="text-end ${tx.monto >= 0 ? 'text-success' : 'text-danger'}">
+                            ${formatCurrency(tx.monto)}
+                        </td>
+                        <td class="text-end">${formatCurrency(tx.saldo)}</td>
+                    `;
+                    transactionsBody.appendChild(row);
+                });
+                
+                // Actualizar estado del botón de cargar más
+                if (loadMoreBtn) {
+                    loadMoreBtn.disabled = false;
+                    loadMoreSpinner.classList.add('d-none');
+                    loadMoreText.textContent = 'Cargar más transacciones';
+                    
+                    if (!response.hasMore) {
+                        loadMoreBtn.classList.add('d-none');
+                    }
+                }
+                
+                currentPage = page;
+            } catch (error) {
+                console.error('Error al cargar transacciones:', error);
+                showToast('Error al cargar transacciones', 'danger');
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Función para inicializar los gráficos
+        function initCharts() {
+            // Destruir gráficos existentes si los hay
+            if (incomeExpenseChart) {
+                incomeExpenseChart.destroy();
+            }
+            if (expenseDistributionChart) {
+                expenseDistributionChart.destroy();
+            }
+            
+            // Gráfico de tendencia de ingresos vs gastos
+            const incomeExpenseCtx = document.getElementById('incomeExpenseChart').getContext('2d');
+            incomeExpenseChart = new Chart(incomeExpenseCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov'],
+                    datasets: [
+                        {
+                            label: 'Ingresos',
+                            data: [8500, 9200, 10500, 11000, 12500, 13200, 14500, 12800, 13500, 14200, 15000],
+                            borderColor: '#4e73df',
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Gastos',
+                            data: [5200, 5800, 6500, 7200, 7800, 8500, 9200, 10500, 9800, 10200, 11000],
+                            borderColor: '#e74a3b',
+                            backgroundColor: 'rgba(231, 74, 59, 0.05)',
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de distribución de gastos
+            const expenseDistCtx = document.getElementById('expenseDistributionChart').getContext('2d');
+            expenseDistributionChart = new Chart(expenseDistCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Nómina', 'Proveedores', 'Servicios', 'Impuestos', 'Otros'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617'],
+                        hoverBorderColor: 'rgba(234, 236, 244, 1)',
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${percentage}% (${formatCurrency(value * 1000)})`;
+                                }
+                            }
+                        }
+                    }
+                },
+            });
+        }
+
+        // Función para mostrar notificaciones
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `position-fixed bottom-0 end-0 m-3 alert alert-${type} alert-dismissible fade show`;
+            toast.role = 'alert';
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            `;
+            document.body.appendChild(toast);
+            
+            // Cerrar automáticamente después de 3 segundos
+            setTimeout(() => {
+                const bsAlert = new bootstrap.Alert(toast);
+                bsAlert.close();
+            }, 3000);
+        }
+
+        // Función para inicializar el informe
+        async function initReport() {
+            const loadingContainer = document.getElementById('loadingContainer');
+            const reportContent = document.getElementById('reportContent');
+            
+            try {
+                // Mostrar indicador de carga
+                loadingContainer.classList.remove('d-none');
+                reportContent.innerHTML = '';
+                
+                // Simular carga de datos (en un entorno real, esto sería una llamada a la API)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Renderizar la plantilla del informe
+                reportContent.innerHTML = reportTemplate;
+                
+                // Inicializar gráficos
+                initCharts();
+                
+                // Cargar la primera página de transacciones
+                await renderTransactions(1);
+                
+                // Configurar el observador de intersección para carga infinita
+                setupInfiniteScroll();
+                
+            } catch (error) {
+                console.error('Error al cargar el informe:', error);
+                showToast('Error al cargar el informe', 'danger');
+            } finally {
+                loadingContainer.classList.add('d-none');
+            }
+        }
+
+        // Configurar scroll infinito
+        function setupInfiniteScroll() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !isLoading) {
+                        loadMoreTransactions();
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const target = document.getElementById('scrollObserver');
+            if (target) {
+                observer.observe(target);
+            }
+        }
+
+        // Función para cargar más transacciones
+        async function loadMoreTransactions() {
+            await renderTransactions(currentPage + 1, true);
+        }
+
+        // Inicializar la aplicación cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar manejador de eventos para el formulario
+            document.getElementById('reportFilters')?.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const generateBtn = document.getElementById('generateReportBtn');
+                const buttonText = document.getElementById('buttonText');
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                
+                try {
+                    // Mostrar estado de carga
+                    generateBtn.disabled = true;
+                    loadingSpinner.classList.remove('d-none');
+                    buttonText.textContent = 'Generando informe...';
+                    
+                    // Aquí iría la lógica para cargar los datos según los filtros
+                    const reportType = document.getElementById('reportType').value;
+                    const dateRange = document.getElementById('dateRange').value;
+                    
+                    console.log('Generando informe con filtros:', { reportType, dateRange });
+                    
+                    // Simular carga de datos (en un entorno real, esto sería una llamada a la API)
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    // Recargar el informe con los nuevos filtros
+                    await initReport();
+                    
+                    showToast('Informe generado correctamente', 'success');
+                    
+                } catch (error) {
+                    console.error('Error al generar el informe:', error);
+                    showToast('Error al generar el informe', 'danger');
+                } finally {
+                    // Restaurar estado del botón
+                    generateBtn.disabled = false;
+                    loadingSpinner.classList.add('d-none');
+                    buttonText.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Generar Informe';
+                }
+            });
+            
+            // Configurar manejador para el botón de cargar más
+            document.getElementById('loadMoreBtn')?.addEventListener('click', loadMoreTransactions);
+            
+            // Configurar botones de exportación
+            document.getElementById('exportPdfBtn')?.addEventListener('click', () => {
+                showToast('Exportando a PDF...', 'info');
+                // Lógica de exportación a PDF
+            });
+            
+            document.getElementById('exportExcelBtn')?.addEventListener('click', () => {
+                showToast('Exportando a Excel...', 'info');
+                // Lógica de exportación a Excel
+            });
+            
+            document.getElementById('printBtn')?.addEventListener('click', () => {
+                window.print();
+            });
+            
+            // Inicializar el informe
+            initReport();
+        });
+    </script>
+</body>
+</html>

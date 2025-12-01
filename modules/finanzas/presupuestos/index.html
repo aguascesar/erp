@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuestos - Módulo de Finanzas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Estilos personalizados -->
+    <link href="../../../assets/css/custom.css" rel="stylesheet">
+    <style>
+        /* Estilos generales */
+        body {
+            font-size: 16px;
+            line-height: 1.6;
+            background: url('/assets/img/remuneraciones-bg.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.92);
+            z-index: -1;
+        }
+        
+        h1 { font-size: 2.2rem; }
+        h2 { font-size: 1.8rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.3rem; }
+        h5 { font-size: 1.1rem; }
+        
+        .module-header {
+            background: linear-gradient(87deg, rgba(94, 114, 228, 0.9) 0, rgba(130, 94, 228, 0.9) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Ajustar tamaño de fuente en tablas */
+        .table {
+            font-size: 0.95rem;
+        }
+        
+        /* Ajustar tamaño de fuente en formularios */
+        .form-control, .form-select, .form-label {
+            font-size: 1rem;
+        }
+        
+        /* Ajustar tamaño de fuente en modales */
+        .modal {
+            font-size: 1.05rem;
+        }
+        .card-budget {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-budget:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+        }
+        .badge-status {
+            padding: 0.5em 0.8em;
+            font-weight: 600;
+        }
+        .status-draft {
+            background-color: #6c757d;
+        }
+        .status-approved {
+            background-color: #198754;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .status-rejected {
+            background-color: #dc3545;
+        }
+        .progress {
+            height: 0.8rem;
+        }
+        .select2-container {
+            width: 100% !important;
+        }
+        .budget-summary-card {
+            border-radius: 10px;
+            border-left: 4px solid #5e72e4;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .budget-summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado del Módulo -->
+    <div class="module-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-file-invoice-dollar me-2"></i>Presupuestos</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-transparent p-0 mb-0">
+                            <li class="breadcrumb-item"><a href="../../" class="text-white">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="../" class="text-white">Finanzas</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">Presupuestos</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#newBudgetModal">
+                        <i class="fas fa-plus me-1"></i> Nuevo Presupuesto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="container mt-4">
+        <!-- Resumen Rápido -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 budget-summary-card">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Presupuesto Total</h6>
+                        <h3 class="mb-0">$125,450.00</h3>
+                        <p class="text-success mb-0"><small><i class="fas fa-arrow-up me-1"></i> 12.5% vs período anterior</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 budget-summary-card">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Ejecutado</h6>
+                        <h3 class="mb-0">$78,320.00</h3>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 62%" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">62% del presupuesto</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 budget-summary-card">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Presupuesto Promedio</h6>
+                        <h3 class="mb-0">$15,681.25</h3>
+                        <p class="text-muted mb-0"><small>8 presupuestos activos</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 budget-summary-card">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Vencimiento Próximo</h6>
+                        <h5 class="mb-1">Presupuesto Q4 2023</h5>
+                        <p class="text-warning mb-0"><i class="far fa-clock me-1"></i> Vence en 15 días</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros y Búsqueda -->
+        <div class="card card-budget mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Filtros y Búsqueda</h5>
+            </div>
+            <div class="card-body">
+                <form id="filterForm">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="statusFilter" class="form-label">Estado</label>
+                            <select class="form-select" id="statusFilter">
+                                <option value="">Todos los estados</option>
+                                <option value="draft">Borrador</option>
+                                <option value="pending">Pendiente de Aprobación</option>
+                                <option value="approved">Aprobado</option>
+                                <option value="rejected">Rechazado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="dateRange" class="form-label">Período</label>
+                            <select class="form-select" id="dateRange">
+                                <option value="current_year" selected>Año en Curso</option>
+                                <option value="last_year">Año Anterior</option>
+                                <option value="next_year">Próximo Año</option>
+                                <option value="custom">Personalizado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="startDate" class="form-label">Fecha Inicio</label>
+                            <input type="text" class="form-control datepicker" id="startDate" placeholder="Seleccione fecha">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="endDate" class="form-label">Fecha Fin</label>
+                            <input type="text" class="form-control datepicker" id="endDate" placeholder="Seleccione fecha">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="searchTerm" class="form-label">Buscar</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="searchTerm" placeholder="Buscar por nombre, código...">
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="departmentFilter" class="form-label">Departamento</label>
+                            <select class="form-select" id="departmentFilter">
+                                <option value="">Todos los departamentos</option>
+                                <option value="ventas">Ventas</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="ti">TI</option>
+                                <option value="rrhh">Recursos Humanos</option>
+                                <option value="operaciones">Operaciones</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary me-2">
+                                <i class="fas fa-filter me-1"></i> Aplicar Filtros
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary">
+                                <i class="fas fa-undo me-1"></i> Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista de Presupuestos -->
+        <div class="card card-budget">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Lista de Presupuestos</h5>
+                <div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-download me-1"></i> Exportar
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-print me-1"></i> Imprimir
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="budgetsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Departamento</th>
+                                <th>Período</th>
+                                <th>Monto</th>
+                                <th>Ejecutado</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BGT-2023-001</td>
+                                <td>Presupuesto Marketing Q4 2023</td>
+                                <td>Marketing</td>
+                                <td>Oct 2023 - Dic 2023</td>
+                                <td class="text-end">$25,000.00</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>78% ($19,500.00)</small>
+                                </td>
+                                <td><span class="badge bg-success badge-status">Aprobado</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-sm btn-outline-primary" title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BGT-2023-002</td>
+                                <td>Presupuesto TI Anual 2023</td>
+                                <td>TI</td>
+                                <td>Ene 2023 - Dic 2023</td>
+                                <td class="text-end">$50,000.00</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>95% ($47,500.00)</small>
+                                </td>
+                                <td><span class="badge bg-success badge-status">Aprobado</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-sm btn-outline-primary" title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BGT-2024-001</td>
+                                <td>Presupuesto Ventas Q1 2024</td>
+                                <td>Ventas</td>
+                                <td>Ene 2024 - Mar 2024</td>
+                                <td class="text-end">$30,000.00</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>35% ($10,500.00)</small>
+                                </td>
+                                <td><span class="badge bg-warning badge-status">Pendiente</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-sm btn-outline-primary" title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" title="Aprobar">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BGT-2023-003</td>
+                                <td>Capacitación de Personal</td>
+                                <td>RRHH</td>
+                                <td>Nov 2023 - Feb 2024</td>
+                                <td class="text-end">$15,000.00</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>15% ($2,250.00)</small>
+                                </td>
+                                <td><span class="badge bg-secondary badge-status">Borrador</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-sm btn-outline-primary" title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BGT-2023-004</td>
+                                <td>Mantenimiento de Equipos</td>
+                                <td>Operaciones</td>
+                                <td>Jul 2023 - Jun 2024</td>
+                                <td class="text-end">$8,450.00</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>65% ($5,492.50)</small>
+                                </td>
+                                <td><span class="badge bg-success badge-status">Aprobado</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-sm btn-outline-primary" title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0">Mostrando 1 a 5 de 12 presupuestos</p>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="Paginación" class="float-md-end">
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Presupuesto -->
+    <div class="modal fade" id="newBudgetModal" tabindex="-1" aria-labelledby="newBudgetModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="newBudgetModalLabel">Nuevo Presupuesto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form id="newBudgetForm">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="budgetTitle" class="form-label">Título del Presupuesto <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="budgetTitle" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="budgetCode" class="form-label">Código <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">BGT-</span>
+                                    <input type="text" class="form-control" id="budgetCode" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="generateCode">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="department" class="form-label">Departamento <span class="text-danger">*</span></label>
+                                <select class="form-select select2" id="department" required>
+                                    <option value="">Seleccione un departamento</option>
+                                    <option value="ventas">Ventas</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="ti">TI</option>
+                                    <option value="rrhh">Recursos Humanos</option>
+                                    <option value="operaciones">Operaciones</option>
+                                    <option value="finanzas">Finanzas</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fiscalYear" class="form-label">Año Fiscal <span class="text-danger">*</span></label>
+                                <select class="form-select" id="fiscalYear" required>
+                                    <option value="2023">2023</option>
+                                    <option value="2024" selected>2024</option>
+                                    <option value="2025">2025</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="startDateModal" class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control datepicker" id="startDateModal" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="endDateModal" class="form-label">Fecha de Fin <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control datepicker" id="endDateModal" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="budgetDescription" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="budgetDescription" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Partidas del Presupuesto</h6>
+                                    <button type="button" class="btn btn-sm btn-primary" id="addBudgetItem">
+                                        <i class="fas fa-plus me-1"></i> Agregar Partida
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered" id="budgetItemsTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Descripción</th>
+                                                <th style="width: 20%;">Categoría</th>
+                                                <th style="width: 15%;">Cantidad</th>
+                                                <th style="width: 15%;">Costo Unitario</th>
+                                                <th style="width: 15%;">Total</th>
+                                                <th style="width: 5%;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="form-control form-control-sm" placeholder="Descripción"></td>
+                                                <td>
+                                                    <select class="form-select form-select-sm">
+                                                        <option value="">Seleccionar</option>
+                                                        <option value="personal">Personal</option>
+                                                        <option value="equipos">Equipos</option>
+                                                        <option value="suministros">Suministros</option>
+                                                        <option value="servicios">Servicios</option>
+                                                        <option value="viajes">Viajes</option>
+                                                        <option value="capacitacion">Capacitación</option>
+                                                        <option value="otros">Otros</option>
+                                                    </select>
+                                                </td>
+                                                <td><input type="number" class="form-control form-control-sm quantity" value="1" min="1"></td>
+                                                <td><input type="number" class="form-control form-control-sm unit-price" value="0.00" step="0.01" min="0"></td>
+                                                <td class="text-end">$0.00</td>
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-sm btn-outline-danger remove-item" disabled>
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4" class="text-end fw-bold">Total del Presupuesto:</td>
+                                                <td class="text-end fw-bold" id="budgetTotal">$0.00</td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="notifyApprovers">
+                                    <label class="form-check-label" for="notifyApprovers">
+                                        Notificar a los aprobadores después de guardar
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-light">Guardar como Borrador</button>
+                        <button type="submit" class="btn btn-primary">Guardar y Enviar para Aprobación</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    
+    <script>
+        // Inicialización de DataTable
+        $(document).ready(function() {
+            const budgetsTable = $('#budgetsTable').DataTable({
+                responsive: true,
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+                },
+                columnDefs: [
+                    { orderable: false, targets: [7] } // Deshabilitar ordenamiento en columna de acciones
+                ],
+                order: [[0, 'desc']] // Ordenar por la primera columna de forma descendente
+            });
+
+            // Inicializar Select2
+            $('.select2').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: 'Seleccione una opción',
+                allowClear: true
+            });
+
+            // Inicializar Flatpickr para los selectores de fecha
+            flatpickr.localize(flatpickr.l10ns.es);
+            $('.datepicker').flatpickr({
+                dateFormat: 'Y-m-d',
+                allowInput: true,
+                locale: 'es',
+                disableMobile: true
+            });
+
+            // Configurar fechas por defecto en el modal
+            const today = new Date();
+            const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+            const endOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+            
+            $('#startDateModal').flatpickr('setDate', nextMonth);
+            $('#endDateModal').flatpickr('setDate', endOfNextMonth);
+
+            // Generar código de presupuesto
+            $('#generateCode').click(function() {
+                const year = $('#fiscalYear').val();
+                const randomNum = Math.floor(1000 + Math.random() * 9000);
+                $('#budgetCode').val(`${year}${randomNum}`);
+            });
+
+            // Agregar nueva fila a la tabla de partidas
+            let itemCounter = 1;
+            $('#addBudgetItem').click(function() {
+                const newRow = `
+                    <tr>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Descripción"></td>
+                        <td>
+                            <select class="form-select form-select-sm">
+                                <option value="">Seleccionar</option>
+                                <option value="personal">Personal</option>
+                                <option value="equipos">Equipos</option>
+                                <option value="suministros">Suministros</option>
+                                <option value="servicios">Servicios</option>
+                                <option value="viajes">Viajes</option>
+                                <option value="capacitacion">Capacitación</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </td>
+                        <td><input type="number" class="form-control form-control-sm quantity" value="1" min="1"></td>
+                        <td><input type="number" class="form-control form-control-sm unit-price" value="0.00" step="0.01" min="0"></td>
+                        <td class="text-end">$0.00</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-outline-danger remove-item">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#budgetItemsTable tbody').append(newRow);
+                itemCounter++;
+                
+                // Si hay más de una fila, habilitar botones de eliminar
+                if (itemCounter > 1) {
+                    $('.remove-item').prop('disabled', false);
+                }
+                
+                // Desplazarse a la nueva fila
+                $('html, body').animate({
+                    scrollTop: $('#budgetItemsTable').offset().top + $('#budgetItemsTable').outerHeight() - $(window).height() + 100
+                }, 500);
+            });
+
+            // Eliminar fila de partida
+            $(document).on('click', '.remove-item', function() {
+                if ($('#budgetItemsTable tbody tr').length > 1) {
+                    $(this).closest('tr').remove();
+                    itemCounter--;
+                    updateBudgetTotal();
+                    
+                    // Si solo queda una fila, deshabilitar botón de eliminar
+                    if (itemCounter <= 1) {
+                        $('.remove-item').prop('disabled', true);
+                    }
+                }
+            });
+
+            // Calcular total cuando cambian cantidad o precio unitario
+            $(document).on('input', '.quantity, .unit-price', function() {
+                const row = $(this).closest('tr');
+                const quantity = parseFloat(row.find('.quantity').val()) || 0;
+                const unitPrice = parseFloat(row.find('.unit-price').val()) || 0;
+                const total = quantity * unitPrice;
+                
+                row.find('td:eq(4)').text('$' + total.toFixed(2));
+                updateBudgetTotal();
+            });
+
+            // Función para actualizar el total del presupuesto
+            function updateBudgetTotal() {
+                let total = 0;
+                $('#budgetItemsTable tbody tr').each(function() {
+                    const rowTotal = $(this).find('td:eq(4)').text().replace('$', '');
+                    total += parseFloat(rowTotal) || 0;
+                });
+                
+                $('#budgetTotal').text('$' + total.toFixed(2));
+            }
+
+            // Manejar envío del formulario
+            $('#newBudgetForm').on('submit', function(e) {
+                e.preventDefault();
+                // Aquí iría la lógica para guardar el presupuesto
+                alert('Presupuesto guardado correctamente');
+                $('#newBudgetModal').modal('hide');
+                // Recargar la tabla o actualizar la interfaz según sea necesario
+            });
+
+            // Inicializar el total del presupuesto
+            updateBudgetTotal();
+
+            // Manejar el cambio en el selector de rango de fechas
+            $('#dateRange').change(function() {
+                const value = $(this).val();
+                const today = new Date();
+                const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+                const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                
+                if (value === 'current_year') {
+                    $('#startDate').val(today.getFullYear() + '-01-01');
+                    $('#endDate').val(today.getFullYear() + '-12-31');
+                } else if (value === 'last_year') {
+                    $('#startDate').val((today.getFullYear() - 1) + '-01-01');
+                    $('#endDate').val((today.getFullYear() - 1) + '-12-31');
+                } else if (value === 'next_year') {
+                    $('#startDate').val((today.getFullYear() + 1) + '-01-01');
+                    $('#endDate').val((today.getFullYear() + 1) + '-12-31');
+                } else if (value === 'custom') {
+                    $('#startDate, #endDate').val('');
+                }
+            });
+            
+            // Inicializar fechas al cargar la página
+            $('#dateRange').trigger('change');
+        });
+    </script>
+</body>
+</html>
