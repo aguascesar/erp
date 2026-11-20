@@ -1135,3 +1135,15 @@ Se identificó la necesidad de reorganizar los archivos principales para mejorar
 - Problemas de diseño responsivo
 - Validaciones de formulario
 
+
+
+
+
+
+De nada. El módulo pesaje_vehiculos está funcionando con todas las funcionalidades implementadas:
+
+Carga automática de datos de Diciembre2025
+Filtros automáticos por fecha, estado y búsqueda
+Exportación a Excel con rango de fechas personalizable
+Modo oscuro
+Resumen del Día en el header

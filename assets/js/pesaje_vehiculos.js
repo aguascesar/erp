@@ -21,26 +21,86 @@ const btnSiguiente = document.getElementById('btnSiguiente');
 const paginacionInfo = document.getElementById('paginacionInfo');
 const buscarPesaje = document.getElementById('buscarPesaje');
 const btnImprimir = document.getElementById('btnImprimir');
+const btnSubirJSON = document.getElementById('btnSubirJSON');
+const inputJSON = document.getElementById('inputJSON');
+const btnToggleTheme = document.getElementById('btnToggleTheme');
+const btnExportarExcel = document.getElementById('btnExportarExcel');
+const modalExportarExcel = document.getElementById('modalExportarExcel');
+const exportFechaInicio = document.getElementById('exportFechaInicio');
+const exportFechaFin = document.getElementById('exportFechaFin');
+const exportUsarFiltrosActuales = document.getElementById('exportUsarFiltrosActuales');
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    // Configurar fechas por defecto (hoy)
-    const today = new Date().toISOString().split('T')[0];
-    fechaInicio.value = today;
-    fechaFin.value = today;
-    
+    // Cargar tema guardado
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    // Configurar fechas por defecto (rango amplio para mostrar todos los datos)
+    fechaInicio.value = '2025-01-01';
+    fechaFin.value = '2025-12-31';
+
     // Configurar fecha/hora actual en el formulario
     const now = new Date();
     const fechaHoraActual = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
     document.getElementById('fechaPesaje').value = fechaHoraActual;
-    
+
+    // Cargar productos en el combo
+    cargarProductos();
+
+    // Cargar clientes en el combo
+    cargarClientes();
+
     // Cargar datos iniciales
     cargarPesajes();
     cargarVehiculosRecientes();
-    
+
     // Configurar eventos
     configurarEventos();
 });
+
+// Cargar productos en el combo
+function cargarProductos() {
+    const productoSelect = document.getElementById('producto');
+    
+    // Limpiar opciones existentes (excepto la primera)
+    productoSelect.innerHTML = '<option value="">Seleccione un producto</option>';
+    
+    // Cargar productos desde el archivo JS
+    if (typeof productosLista !== 'undefined' && productosLista.length > 0) {
+        productosLista.forEach(producto => {
+            const option = document.createElement('option');
+            option.value = producto.nombre;
+            option.textContent = producto.nombre;
+            productoSelect.appendChild(option);
+        });
+        console.log(`Cargados ${productosLista.length} productos`);
+    } else {
+        console.warn('No se encontraron productos en productosLista');
+    }
+}
+
+// Cargar clientes en el combo
+function cargarClientes() {
+    const proveedorSelect = document.getElementById('proveedor');
+    
+    // Limpiar opciones existentes (excepto la primera)
+    proveedorSelect.innerHTML = '<option value="">Seleccione un cliente</option>';
+    
+    // Cargar clientes desde el archivo JS
+    if (typeof clientesLista !== 'undefined' && clientesLista.length > 0) {
+        clientesLista.forEach(cliente => {
+            const option = document.createElement('option');
+            option.value = cliente.rSocial;
+            option.textContent = `${cliente.rSocial} - ${cliente.rut}`;
+            proveedorSelect.appendChild(option);
+        });
+        console.log(`Cargados ${clientesLista.length} clientes`);
+    } else {
+        console.warn('No se encontraron clientes en clientesLista');
+    }
+}
 
 // Configuración de eventos
 function configurarEventos() {
@@ -75,6 +135,33 @@ function configurarEventos() {
     btnFiltrar.addEventListener('click', () => {
         currentPage = 1;
         cargarPesajes();
+    });
+
+    // Aplicar filtros automáticamente al cambiar fechas
+    fechaInicio.addEventListener('change', () => {
+        currentPage = 1;
+        cargarPesajes();
+    });
+
+    fechaFin.addEventListener('change', () => {
+        currentPage = 1;
+        cargarPesajes();
+    });
+
+    // Aplicar filtros automáticamente al cambiar estado
+    filtroEstado.addEventListener('change', () => {
+        currentPage = 1;
+        cargarPesajes();
+    });
+
+    // Aplicar filtros automáticamente al buscar (con debounce)
+    let debounceTimer;
+    buscarPesaje.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            currentPage = 1;
+            cargarPesajes();
+        }, 500);
     });
     
     // Búsqueda
@@ -117,30 +204,62 @@ function configurarEventos() {
     
     // Botón de impresión
     btnImprimir.addEventListener('click', imprimirPesaje);
+
+    // Botón para subir JSON
+    btnSubirJSON.addEventListener('click', () => {
+        inputJSON.click();
+    });
+
+    // Input para subir JSON
+    inputJSON.addEventListener('change', procesarArchivoJSON);
+
+    // Botón para cambiar tema
+    btnToggleTheme.addEventListener('click', toggleTheme);
+
+    // Botón para exportar a Excel
+    btnExportarExcel.addEventListener('click', exportarAExcel);
 }
 
 // Cargar lista de pesajes
 async function cargarPesajes() {
     try {
         // Mostrar carga
-        tblPesajesBody.innerHTML = '<tr><td colspan="9" class="text-center">Cargando...</td></tr>';
-        
-        // Simulación de carga de pesajes
-        // En un entorno real, esto haría una llamada a tu API con los filtros
-        // const response = await fetch(`/api/pesajes?fechaInicio=${fechaInicio.value}&fechaFin=${fechaFin.value}&estado=${filtroEstado.value}&busqueda=${buscarPesaje.value}`);
-        // pesajesData = await response.json();
-        
-        // Datos de ejemplo
-        pesajesData = generarDatosEjemplo();
-        
+        tblPesajesBody.innerHTML = '<tr><td colspan="12" class="text-center">Cargando...</td></tr>';
+
+        // Cargar datos iniciales si existen
+        if (typeof pesajesDatosIniciales !== 'undefined' && pesajesDatosIniciales.length > 0) {
+            pesajesData = [...pesajesDatosIniciales];
+        } else {
+            // Datos de ejemplo si no hay datos iniciales
+            pesajesData = generarDatosEjemplo();
+        }
+
+        // Aplicar filtros
+        pesajesData = pesajesData.filter(pesaje => {
+            const fechaPesaje = pesaje.fechaHora.split('T')[0];
+            const fechaInicioVal = fechaInicio.value;
+            const fechaFinVal = fechaFin.value;
+
+            const fechaValida = fechaPesaje >= fechaInicioVal && fechaPesaje <= fechaFinVal;
+            const estadoValido = filtroEstado.value === '' || pesaje.estado === filtroEstado.value;
+            const busquedaValida = buscarPesaje.value === '' ||
+                                   pesaje.patente.toLowerCase().includes(buscarPesaje.value.toLowerCase()) ||
+                                   pesaje.conductor.toLowerCase().includes(buscarPesaje.value.toLowerCase());
+
+            return fechaValida && estadoValido && busquedaValida;
+        });
+
+        console.log(`Registros cargados: ${pesajesData.length}`);
+        console.log(`Filtro fechas: ${fechaInicio.value} a ${fechaFin.value}`);
+
         // Actualizar la tabla
         actualizarTablaPesajes();
         actualizarResumen();
-        
+
     } catch (error) {
         console.error('Error al cargar los pesajes:', error);
         mostrarAlerta('Error al cargar los registros de pesaje', 'error');
-        tblPesajesBody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">Error al cargar los datos</td></tr>';
+        tblPesajesBody.innerHTML = '<tr><td colspan="12" class="text-center text-danger">Error al cargar los datos</td></tr>';
     }
 }
 
@@ -210,7 +329,7 @@ function generarDatosEjemplo() {
 // Actualizar la tabla con los datos
 function actualizarTablaPesajes() {
     if (pesajesData.length === 0) {
-        tblPesajesBody.innerHTML = '<tr><td colspan="9" class="text-center">No se encontraron registros</td></tr>';
+        tblPesajesBody.innerHTML = '<tr><td colspan="12" class="text-center">No se encontraron registros</td></tr>';
         return;
     }
     
@@ -258,6 +377,9 @@ function actualizarTablaPesajes() {
             <td>${fechaStr} ${horaStr}</td>
             <td>${pesaje.patente}</td>
             <td>${pesaje.conductor}</td>
+            <td>${pesaje.producto}</td>
+            <td>${pesaje.proveedor}</td>
+            <td>${pesaje.documento}</td>
             <td class="text-right">${pesaje.pesoBruto.toLocaleString('es-CL')} kg</td>
             <td class="text-right">${pesaje.pesoTara.toLocaleString('es-CL')} kg</td>
             <td class="text-right font-weight-bold">${pesaje.pesoNeto.toLocaleString('es-CL')} kg</td>
@@ -610,12 +732,12 @@ function imprimirPesaje() {
                             <th>Fecha/Hora</th>
                         </tr>
                         <tr>
-                            <td>Peso Bruto</td>
+                            <td>Peso Entrada</td>
                             <td>${document.getElementById('detallePesoBruto').textContent}</td>
                             <td>${document.getElementById('detalleHoraBruto').textContent}</td>
                         </tr>
                         <tr>
-                            <td>Peso Tara</td>
+                            <td>Peso Salida</td>
                             <td>${document.getElementById('detallePesoTara').textContent}</td>
                             <td>${document.getElementById('detalleHoraTara').textContent}</td>
                         </tr>
@@ -677,7 +799,262 @@ function mostrarAlerta(mensaje, tipo = 'info') {
     alert(`${tipo.toUpperCase()}: ${mensaje}`);
 }
 
+// Procesar archivo JSON subido
+function procesarArchivoJSON(e) {
+    const archivo = e.target.files[0];
+    if (!archivo) return;
+
+    const reader = new FileReader();
+    
+    reader.onload = function(event) {
+        try {
+            let contenido = event.target.result;
+            
+            // Eliminar 'json_data' del inicio si existe
+            if (contenido.trim().startsWith('json_data')) {
+                contenido = contenido.trim().substring(9);
+            }
+            
+            const datosJSON = JSON.parse(contenido);
+            
+            if (!Array.isArray(datosJSON)) {
+                mostrarAlerta('El archivo JSON debe contener un array de registros', 'error');
+                return;
+            }
+            
+            // Mapear datos al formato del sistema
+            const pesajesImportados = mapearDatosJSON(datosJSON);
+            
+            // Agregar a los datos existentes
+            pesajesData = [...pesajesData, ...pesajesImportados];
+            
+            // Actualizar la tabla
+            actualizarTablaPesajes();
+            actualizarResumen();
+            
+            mostrarAlerta(`Se importaron ${pesajesImportados.length} registros correctamente`, 'success');
+            
+            // Limpiar el input
+            inputJSON.value = '';
+            
+        } catch (error) {
+            console.error('Error al procesar el JSON:', error);
+            mostrarAlerta('Error al procesar el archivo JSON. Verifique el formato.', 'error');
+        }
+    };
+    
+    reader.onerror = function() {
+        mostrarAlerta('Error al leer el archivo', 'error');
+    };
+    
+    reader.readAsText(archivo);
+}
+
+// Mapear datos del JSON al formato del sistema
+function mapearDatosJSON(datosJSON) {
+    const maxId = pesajesData.length > 0 ? Math.max(...pesajesData.map(p => p.id)) : 0;
+    
+    return datosJSON.map((registro, index) => {
+        // Parsear fecha y hora del formato "2025/12/01" y "08:07:28"
+        const fechaParts = registro.fechaIn1 ? registro.fechaIn1.split('/') : ['2025', '12', '01'];
+        const horaParts = registro.horaIn1 ? registro.horaIn1.split(':') : ['00', '00', '00'];
+        
+        const fecha = new Date(
+            parseInt(fechaParts[0]),
+            parseInt(fechaParts[1]) - 1,
+            parseInt(fechaParts[2]),
+            parseInt(horaParts[0]),
+            parseInt(horaParts[1]),
+            parseInt(horaParts[2])
+        );
+        
+        const pIn1 = parseFloat(registro.pIn1) || 0;
+        const pOut1 = parseFloat(registro.pOut1) || 0;
+        
+        // Determinar peso bruto y tara según el proceso
+        let pesoBruto, pesoTara, pesoNeto;
+        if (registro.PesajeProceso === 'ENTRADA') {
+            pesoBruto = pIn1;
+            pesoTara = 0;
+            pesoNeto = 0;
+        } else if (registro.PesajeProceso === 'SALIDA') {
+            pesoBruto = pIn1;
+            pesoTara = pOut1;
+            pesoNeto = Math.max(0, pIn1 - pOut1);
+        } else {
+            pesoBruto = pIn1;
+            pesoTara = pOut1;
+            pesoNeto = Math.max(0, pIn1 - pOut1);
+        }
+        
+        // Determinar estado según el tipo de pesaje
+        let estado = 'completado';
+        if (registro.PesajeTipo === 'INTERNO_SIN_VALOR') {
+            estado = 'completado';
+        } else if (registro.PesajeTipo === 'CREDITO') {
+            estado = 'pendiente';
+        } else if (registro.PesajeTipo === 'PARTICULAR_CON_BOLETA') {
+            estado = 'completado';
+        }
+        
+        // Concatenar nombre y apellido para el conductor
+        const nombre = registro.cInNom || '';
+        const apellido = registro.cInAp || '';
+        const conductor = nombre && apellido ? `${nombre} ${apellido}` : (nombre || apellido || '');
+
+        return {
+            id: maxId + index + 1,
+            fechaHora: fecha.toISOString(),
+            patente: registro.patente || '',
+            conductor: conductor,
+            producto: registro.producto1 || '',
+            proveedor: registro.cliente1 || '',
+            documento: registro.gDespacho1 || '',
+            pesoBruto: pesoBruto,
+            pesoTara: pesoTara,
+            pesoNeto: pesoNeto,
+            estado: estado,
+            observaciones: `Importado de JSON - Tipo: ${registro.PesajeTipo}, Proceso: ${registro.PesajeProceso}`,
+            esExportacion: false,
+            fechaHoraBruto: fecha.toISOString(),
+            fechaHoraTara: pOut1 > 0 ? new Date(fecha.getTime() + 30 * 60000).toISOString() : fecha.toISOString()
+        };
+    });
+}
+
 // Hacer funciones accesibles globalmente
 window.verPesaje = verPesaje;
 window.editarPesaje = editarPesaje;
 window.eliminarPesaje = eliminarPesaje;
+window.cerrarModalExportarExcel = cerrarModalExportarExcel;
+window.confirmarExportarExcel = confirmarExportarExcel;
+
+// Función para alternar entre temas
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+// Función para actualizar el icono del botón de tema
+function updateThemeIcon(theme) {
+    const icon = btnToggleTheme.querySelector('i');
+    if (icon) {
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+// Función para abrir modal de exportación a Excel
+function exportarAExcel() {
+    // Configurar fechas del modal con las fechas actuales de filtro
+    exportFechaInicio.value = fechaInicio.value;
+    exportFechaFin.value = fechaFin.value;
+
+    // Mostrar modal
+    modalExportarExcel.style.display = 'block';
+}
+
+// Función para cerrar modal de exportación a Excel
+function cerrarModalExportarExcel() {
+    modalExportarExcel.style.display = 'none';
+}
+
+// Función para confirmar y ejecutar exportación a Excel
+function confirmarExportarExcel() {
+    // Obtener datos base (todos los datos iniciales)
+    let datosParaExportar = typeof pesajesDatosIniciales !== 'undefined' ?
+        [...pesajesDatosIniciales] :
+        generarDatosEjemplo();
+
+    console.log(`Datos base: ${datosParaExportar.length} registros`);
+    console.log(`Usar filtros actuales: ${exportUsarFiltrosActuales.checked}`);
+
+    // Aplicar filtros según selección
+    if (exportUsarFiltrosActuales.checked) {
+        // Usar filtros actuales de la interfaz
+        console.log(`Filtro interfaz - Fechas: ${fechaInicio.value} a ${fechaFin.value}, Estado: ${filtroEstado.value}, Búsqueda: ${buscarPesaje.value}`);
+        datosParaExportar = datosParaExportar.filter(pesaje => {
+            const fechaPesaje = pesaje.fechaHora.split('T')[0];
+            return fechaPesaje >= fechaInicio.value &&
+                   fechaPesaje <= fechaFin.value &&
+                   (filtroEstado.value === '' || pesaje.estado === filtroEstado.value) &&
+                   (buscarPesaje.value === '' ||
+                    pesaje.patente.toLowerCase().includes(buscarPesaje.value.toLowerCase()) ||
+                    pesaje.conductor.toLowerCase().includes(buscarPesaje.value.toLowerCase()));
+        });
+    } else {
+        // Usar rango de fechas del modal
+        const fechaInicioExport = exportFechaInicio.value;
+        const fechaFinExport = exportFechaFin.value;
+
+        console.log(`Filtro modal - Fechas: ${fechaInicioExport} a ${fechaFinExport}`);
+        datosParaExportar = datosParaExportar.filter(pesaje => {
+            const fechaPesaje = pesaje.fechaHora.split('T')[0];
+            return fechaPesaje >= fechaInicioExport && fechaPesaje <= fechaFinExport;
+        });
+    }
+
+    console.log(`Registros después del filtro: ${datosParaExportar.length}`);
+
+    if (!datosParaExportar || datosParaExportar.length === 0) {
+        mostrarAlerta('No hay datos para exportar con los filtros seleccionados', 'warning');
+        return;
+    }
+
+    // Preparar datos para exportar
+    const datosExportar = datosParaExportar.map(pesaje => ({
+        'ID': pesaje.id,
+        'Fecha': pesaje.fechaHora.split('T')[0],
+        'Hora': pesaje.fechaHora.split('T')[1],
+        'Patente': pesaje.patente,
+        'Conductor': pesaje.conductor,
+        'Producto': pesaje.producto,
+        'Proveedor': pesaje.proveedor,
+        'Documento': pesaje.documento,
+        'Peso Bruto (kg)': pesaje.pesoBruto,
+        'Peso Tara (kg)': pesaje.pesoTara,
+        'Peso Neto (kg)': pesaje.pesoNeto,
+        'Estado': pesaje.estado,
+        'Observaciones': pesaje.observaciones
+    }));
+
+    // Crear worksheet
+    const ws = XLSX.utils.json_to_sheet(datosExportar);
+
+    // Ajustar ancho de columnas
+    const colWidths = [
+        { wch: 6 },  // ID
+        { wch: 12 }, // Fecha
+        { wch: 10 }, // Hora
+        { wch: 10 }, // Patente
+        { wch: 15 }, // Conductor
+        { wch: 20 }, // Producto
+        { wch: 25 }, // Proveedor
+        { wch: 12 }, // Documento
+        { wch: 14 }, // Peso Bruto
+        { wch: 12 }, // Peso Tara
+        { wch: 12 }, // Peso Neto
+        { wch: 10 }, // Estado
+        { wch: 40 }  // Observaciones
+    ];
+    ws['!cols'] = colWidths;
+
+    // Crear workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Pesajes');
+
+    // Generar nombre de archivo con rango de fechas
+    const fechaInicioNombre = exportFechaInicio.value;
+    const fechaFinNombre = exportFechaFin.value;
+    const nombreArchivo = `Pesajes_${fechaInicioNombre}_a_${fechaFinNombre}.xlsx`;
+
+    // Descargar archivo
+    XLSX.writeFile(wb, nombreArchivo);
+
+    // Cerrar modal
+    cerrarModalExportarExcel();
+
+    mostrarAlerta(`Archivo ${nombreArchivo} exportado correctamente (${datosExportar.length} registros)`, 'success');
+}

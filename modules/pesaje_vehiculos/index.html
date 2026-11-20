@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Pesaje - ERP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/pesaje_vehiculos.css">
+    <link rel="stylesheet" href="../../assets/css/dark-theme-overrides.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="pesaje-container">
@@ -15,6 +17,37 @@
                 <button id="btnNuevoPesaje" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Nuevo Pesaje
                 </button>
+                <button id="btnSubirJSON" class="btn btn-success">
+                    <i class="fas fa-file-upload"></i> Subir JSON
+                </button>
+                <button id="btnToggleTheme" class="btn btn-secondary">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <input type="file" id="inputJSON" accept=".json" style="display: none;">
+                <div class="resumen-card">
+                    <div class="resumen-header">
+                        <span>Resumen del Día</span>
+                        <span id="fechaResumen">21/10/2023</span>
+                    </div>
+                    <div class="resumen-body">
+                        <div class="resumen-item-small">
+                            <span class="label">Total:</span>
+                            <span class="value" id="totalPesajes">0</span>
+                        </div>
+                        <div class="resumen-item-small">
+                            <span class="label">Peso:</span>
+                            <span class="value" id="pesoTotal">0 kg</span>
+                        </div>
+                        <div class="resumen-item-small">
+                            <span class="label">Pend:</span>
+                            <span class="value warning" id="pendientes">0</span>
+                        </div>
+                        <div class="resumen-item-small">
+                            <span class="label">Anul:</span>
+                            <span class="value danger" id="anulados">0</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="date-filter">
                     <input type="date" id="fechaInicio" class="form-control">
                     <span>a</span>
@@ -33,44 +66,6 @@
         </header>
 
         <div class="pesaje-content">
-            <div class="resumen-container">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Resumen del Día</h3>
-                        <span id="fechaResumen">21/10/2023</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="resumen-item">
-                            <span class="resumen-label">Total Pesajes:</span>
-                            <span class="resumen-value" id="totalPesajes">0</span>
-                        </div>
-                        <div class="resumen-item">
-                            <span class="resumen-label">Peso Total:</span>
-                            <span class="resumen-value" id="pesoTotal">0 kg</span>
-                        </div>
-                        <div class="resumen-item">
-                            <span class="resumen-label">Pendientes:</span>
-                            <span class="resumen-value text-warning" id="pendientes">0</span>
-                        </div>
-                        <div class="resumen-item">
-                            <span class="resumen-label">Anulados:</span>
-                            <span class="resumen-value text-danger" id="anulados">0</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h3>Vehículos Recientes</h3>
-                    </div>
-                    <div class="card-body" id="vehiculosRecientes">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> No hay vehículos recientes.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <div class="pesajes-container">
                 <div class="pesajes-header">
                     <h2>Registro de Pesajes</h2>
@@ -93,8 +88,11 @@
                                 <th>Fecha/Hora</th>
                                 <th>Patente</th>
                                 <th>Conductor</th>
-                                <th>Peso Bruto</th>
-                                <th>Peso Tara</th>
+                                <th>Producto</th>
+                                <th>Proveedor</th>
+                                <th>Documento</th>
+                                <th>Peso Entrada</th>
+                                <th>Peso Salida</th>
                                 <th>Peso Neto</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
@@ -146,28 +144,28 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="patente">Patente del Vehículo *</label>
-                            <input type="text" id="patente" class="form-control" placeholder="Ej: AB123CD" required>
+                            <input type="text" id="patente" name="patente" class="form-control" placeholder="Ej: AB123CD" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="conductor">Conductor</label>
-                            <input type="text" id="conductor" class="form-control" placeholder="Nombre del conductor">
+                            <input type="text" id="conductor" name="conductor" class="form-control" placeholder="Nombre del conductor">
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="pesoBruto">Peso Bruto (kg)</label>
+                            <label for="pesoBruto">Peso Entrada (kg)</label>
                             <div class="input-group">
-                                <input type="number" id="pesoBruto" class="form-control" placeholder="0.00" step="0.01" min="0">
+                                <input type="number" id="pesoBruto" name="pesoBruto" class="form-control" placeholder="0.00" step="0.01" min="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">kg</span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="pesoTara">Peso Tara (kg)</label>
+                            <label for="pesoTara">Peso Salida (kg)</label>
                             <div class="input-group">
-                                <input type="number" id="pesoTara" class="form-control" placeholder="0.00" step="0.01" min="0">
+                                <input type="number" id="pesoTara" name="pesoTara" class="form-control" placeholder="0.00" step="0.01" min="0">
                                 <div class="input-group-append">
                                     <span class="input-group-text">kg</span>
                                 </div>
@@ -186,34 +184,30 @@
                     
                     <div class="form-group">
                         <label for="producto">Producto Transportado</label>
-                        <select id="producto" class="form-control">
+                        <select id="producto" name="producto" class="form-control">
                             <option value="">Seleccione un producto</option>
-                            <option value="arroz">Arroz</option>
-                            <option value="maiz">Maíz</option>
-                            <option value="trigo">Trigo</option>
-                            <option value="soja">Soja</option>
-                            <option value="cebada">Cebada</option>
                         </select>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="proveedor">Proveedor/Cliente</label>
-                            <input type="text" id="proveedor" class="form-control" placeholder="Nombre del proveedor o cliente">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="documento">N° Documento</label>
-                            <input type="text" id="documento" class="form-control" placeholder="N° de factura o remito">
-                        </div>
+
+                    <div class="form-group">
+                        <label for="proveedor">Proveedor/Cliente</label>
+                        <select id="proveedor" name="proveedor" class="form-control">
+                            <option value="">Seleccione un cliente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="documento">N° Documento</label>
+                        <input type="text" id="documento" name="documento" class="form-control" placeholder="N° de factura o remito">
                     </div>
                     
                     <div class="form-group">
                         <label for="observaciones">Observaciones</label>
-                        <textarea id="observaciones" class="form-control" rows="3" placeholder="Notas adicionales sobre el pesaje"></textarea>
+                        <textarea id="observaciones" name="observaciones" class="form-control" rows="3" placeholder="Notas adicionales sobre el pesaje"></textarea>
                     </div>
                     
                     <div class="form-group form-check">
-                        <input type="checkbox" id="esExportacion" class="form-check-input">
+                        <input type="checkbox" id="esExportacion" name="esExportacion" class="form-check-input">
                         <label class="form-check-label" for="esExportacion">Pesaje para exportación</label>
                     </div>
                     
@@ -281,12 +275,12 @@
                         <h4>Pesajes</h4>
                         <div class="pesajes-detail">
                             <div class="pesaje-item">
-                                <div class="pesaje-label">Peso Bruto:</div>
+                                <div class="pesaje-label">Peso Entrada:</div>
                                 <div class="pesaje-value" id="detallePesoBruto">25,450.50 kg</div>
                                 <div class="pesaje-time" id="detalleHoraBruto">21/10/2023 08:30</div>
                             </div>
                             <div class="pesaje-item">
-                                <div class="pesaje-label">Peso Tara:</div>
+                                <div class="pesaje-label">Peso Salida:</div>
                                 <div class="pesaje-value" id="detallePesoTara">12,350.25 kg</div>
                                 <div class="pesaje-time" id="detalleHoraTara">21/10/2023 09:45</div>
                             </div>
@@ -319,6 +313,39 @@
         </div>
     </div>
 
+    <!-- Modal para exportar a Excel -->
+    <div id="modalExportarExcel" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Exportar a Excel</h3>
+                <span class="close" onclick="cerrarModalExportarExcel()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Rango de Fechas para Exportar</label>
+                    <div class="date-filter-modal">
+                        <input type="date" id="exportFechaInicio" class="form-control">
+                        <span>a</span>
+                        <input type="date" id="exportFechaFin" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="exportUsarFiltrosActuales" checked>
+                        Usar filtros actuales (fecha, estado, búsqueda)
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalExportarExcel()">Cancelar</button>
+                <button class="btn btn-success" onclick="confirmarExportarExcel()">Exportar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/pesaje_datos_iniciales.js"></script>
+    <script src="../../assets/js/pesaje_productos.js"></script>
+    <script src="../../assets/js/pesaje_clientes.js"></script>
     <script src="../../assets/js/pesaje_vehiculos.js"></script>
 </body>
 </html>
