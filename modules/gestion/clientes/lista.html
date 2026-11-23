@@ -376,6 +376,8 @@
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
 
     <!-- Custom scripts for this page -->
+    <!-- Datos compartidos del sistema -->
+    <script src="../../../assets/js/datos_compartidos.js"></script>
     <script src="../../../assets/js/clientes.js"></script>
     <script>
         // Código JavaScript existente...
@@ -423,8 +425,68 @@
                     // Usar setTimeout para asegurar que la UI se actualice
                     setTimeout(() => {
                         try {
-                            const clientes = clienteService.obtenerClientes();
-                            console.log('Clientes obtenidos:', clientes);
+                            // Obtener clientes del catálogo (datos compartidos)
+                            const catalogo = obtenerClientesCatalogo();
+                            
+                            // Obtener clientes desde localStorage (datos personalizados)
+                            let clientesPersonalizados = [];
+                            try {
+                                const clientesGuardados = localStorage.getItem('clientes');
+                                clientesPersonalizados = clientesGuardados ? JSON.parse(clientesGuardados) : [];
+
+                                // Validar que sea un array
+                                if (!Array.isArray(clientesPersonalizados)) {
+                                    console.error('Los clientes personalizados no son un array válido, inicializando array vacío');
+                                    clientesPersonalizados = [];
+                                }
+                            } catch (error) {
+                                console.error('Error al cargar clientes personalizados:', error);
+                                clientesPersonalizados = [];
+                            }
+
+                            // Combinar catálogo con clientes personalizados
+                            // Los clientes personalizados tienen prioridad (sobrescriben datos del catálogo)
+                            const clientesMap = new Map();
+                            
+                            // Primero agregar todos los clientes del catálogo
+                            catalogo.forEach(cli => {
+                                clientesMap.set(cli.id, {
+                                    id: cli.id,
+                                    rut: cli.rut,
+                                    rSocial: cli.rSocial,
+                                    giro1: '',
+                                    telefono: '',
+                                    email: '',
+                                    tipo: 'empresa'
+                                });
+                            });
+                            
+                            // Luego sobrescribir con clientes personalizados
+                            clientesPersonalizados.forEach(cli => {
+                                if (clientesMap.has(cli.id)) {
+                                    const existente = clientesMap.get(cli.id);
+                                    clientesMap.set(cli.id, {
+                                        ...existente,
+                                        ...cli
+                                    });
+                                } else {
+                                    // Cliente personalizado que no está en el catálogo
+                                    clientesMap.set(cli.id, {
+                                        id: cli.id,
+                                        rut: cli.rut || '',
+                                        rSocial: cli.rSocial || 'Cliente personalizado',
+                                        giro1: cli.giro1 || '',
+                                        telefono: cli.telefono || '',
+                                        email: cli.email || '',
+                                        tipo: cli.tipo || 'empresa'
+                                    });
+                                }
+                            });
+                            
+                            // Convertir el Map a array
+                            const clientes = Array.from(clientesMap.values());
+                            
+                            console.log('Clientes combinados obtenidos:', clientes.length);
 
                             // Limpiar el tbody
                             tbody.innerHTML = '';

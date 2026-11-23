@@ -668,6 +668,8 @@
     <script src="../../../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Custom scripts for this page -->
+    <!-- Datos compartidos del sistema -->
+    <script src="../../../assets/js/datos_compartidos.js"></script>
     <script>
         // Variables globales
         let dataTable;
@@ -750,25 +752,65 @@
         // Función para cargar los productos en la tabla
         function cargarProductos() {
             try {
-                // Obtener productos desde localStorage
-                let productos = [];
+                // Obtener productos del catálogo (datos compartidos)
+                const catalogo = obtenerProductosCatalogo();
+                
+                // Obtener productos desde localStorage (datos personalizados con precio, stock, estado)
+                let productosPersonalizados = [];
                 try {
                     const productosGuardados = localStorage.getItem('productos');
-                    productos = productosGuardados ? JSON.parse(productosGuardados) : [];
+                    productosPersonalizados = productosGuardados ? JSON.parse(productosGuardados) : [];
 
                     // Validar que sea un array
-                    if (!Array.isArray(productos)) {
-                        console.error('Los productos no son un array válido, inicializando array vacío');
-                        productos = [];
+                    if (!Array.isArray(productosPersonalizados)) {
+                        console.error('Los productos personalizados no son un array válido, inicializando array vacío');
+                        productosPersonalizados = [];
                     }
 
                     // Filtrar productos inválidos
-                    productos = productos.filter(validarProducto);
+                    productosPersonalizados = productosPersonalizados.filter(validarProducto);
                 } catch (error) {
-                    console.error('Error al cargar productos:', error);
-                    mostrarError('Error al cargar los productos. Por favor, recarga la página.');
-                    return;
+                    console.error('Error al cargar productos personalizados:', error);
+                    productosPersonalizados = [];
                 }
+
+                // Combinar catálogo con productos personalizados
+                // Los productos personalizados tienen prioridad (sobrescriben datos del catálogo)
+                const productosMap = new Map();
+                
+                // Primero agregar todos los productos del catálogo
+                catalogo.forEach(prod => {
+                    productosMap.set(prod.id, {
+                        id: prod.id,
+                        nombre: prod.nombre,
+                        precio: 0,
+                        stock: 0,
+                        estado: 'Activo'
+                    });
+                });
+                
+                // Luego sobrescribir con productos personalizados
+                productosPersonalizados.forEach(prod => {
+                    if (productosMap.has(prod.id)) {
+                        const existente = productosMap.get(prod.id);
+                        productosMap.set(prod.id, {
+                            ...existente,
+                            ...prod
+                        });
+                    } else {
+                        // Producto personalizado que no está en el catálogo
+                        productosMap.set(prod.id, {
+                            id: prod.id,
+                            nombre: prod.nombre || 'Producto personalizado',
+                            precio: prod.precio || 0,
+                            stock: prod.stock || 0,
+                            estado: prod.estado || 'Activo'
+                        });
+                    }
+                });
+                
+                // Convertir el Map a array
+                let productos = Array.from(productosMap.values());
 
                 // Actualizar contadores
                 try {
