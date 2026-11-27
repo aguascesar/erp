@@ -67,17 +67,26 @@ function cargarProductos() {
     // Limpiar opciones existentes (excepto la primera)
     productoSelect.innerHTML = '<option value="">Seleccione un producto</option>';
     
-    // Cargar productos desde el archivo JS
-    if (typeof productosLista !== 'undefined' && productosLista.length > 0) {
-        productosLista.forEach(producto => {
+    // Cargar productos desde datos_compartidos.js
+    if (typeof obtenerProductosCatalogo === 'function') {
+        const productos = obtenerProductosCatalogo();
+        productos.forEach(producto => {
             const option = document.createElement('option');
             option.value = producto.nombre;
             option.textContent = producto.nombre;
             productoSelect.appendChild(option);
         });
-        console.log(`Cargados ${productosLista.length} productos`);
+        console.log(`Cargados ${productos.length} productos`);
+    } else if (typeof productosCatalogo !== 'undefined' && productosCatalogo.length > 0) {
+        productosCatalogo.forEach(producto => {
+            const option = document.createElement('option');
+            option.value = producto.nombre;
+            option.textContent = producto.nombre;
+            productoSelect.appendChild(option);
+        });
+        console.log(`Cargados ${productosCatalogo.length} productos`);
     } else {
-        console.warn('No se encontraron productos en productosLista');
+        console.warn('No se encontraron productos en datos_compartidos.js');
     }
 }
 
@@ -88,17 +97,26 @@ function cargarClientes() {
     // Limpiar opciones existentes (excepto la primera)
     proveedorSelect.innerHTML = '<option value="">Seleccione un cliente</option>';
     
-    // Cargar clientes desde el archivo JS
-    if (typeof clientesLista !== 'undefined' && clientesLista.length > 0) {
-        clientesLista.forEach(cliente => {
+    // Cargar clientes desde datos_compartidos.js
+    if (typeof obtenerClientesCatalogo === 'function') {
+        const clientes = obtenerClientesCatalogo();
+        clientes.forEach(cliente => {
             const option = document.createElement('option');
             option.value = cliente.rSocial;
             option.textContent = `${cliente.rSocial} - ${cliente.rut}`;
             proveedorSelect.appendChild(option);
         });
-        console.log(`Cargados ${clientesLista.length} clientes`);
+        console.log(`Cargados ${clientes.length} clientes`);
+    } else if (typeof clientesCatalogo !== 'undefined' && clientesCatalogo.length > 0) {
+        clientesCatalogo.forEach(cliente => {
+            const option = document.createElement('option');
+            option.value = cliente.rSocial;
+            option.textContent = `${cliente.rSocial} - ${cliente.rut}`;
+            proveedorSelect.appendChild(option);
+        });
+        console.log(`Cargados ${clientesCatalogo.length} clientes`);
     } else {
-        console.warn('No se encontraron clientes en clientesLista');
+        console.warn('No se encontraron clientes en datos_compartidos.js');
     }
 }
 

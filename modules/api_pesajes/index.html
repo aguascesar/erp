@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesajes Recibidos desde API - ERP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/pesaje_vehiculos.css">
+    <link rel="stylesheet" href="../../assets/css/dark-theme-overrides.css">
+</head>
+<body>
+    <div class="pesaje-container">
+        <header class="pesaje-header">
+            <h1><i class="fas fa-server"></i> Pesajes Recibidos desde API</h1>
+            <div class="header-actions">
+                <button id="btnRecargar" class="btn btn-primary">
+                    <i class="fas fa-sync-alt"></i> Recargar
+                </button>
+                <button id="btnExportar" class="btn btn-success">
+                    <i class="fas fa-download"></i> Exportar JSON
+                </button>
+                <button id="btnToggleTheme" class="btn btn-secondary">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="resumen-card">
+                    <div class="resumen-header">
+                        <span>Resumen</span>
+                        <span id="fechaResumen">-</span>
+                    </div>
+                    <div class="resumen-body">
+                        <div class="resumen-item-small">
+                            <span class="label">Total:</span>
+                            <span class="value" id="totalPesajes">0</span>
+                        </div>
+                        <div class="resumen-item-small">
+                            <span class="label">Hoy:</span>
+                            <span class="value" id="pesajesHoy">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="pesaje-content">
+            <div class="pesajes-container">
+                <div class="pesajes-header">
+                    <h2>Registro de Pesajes API</h2>
+                    <div class="actions">
+                        <div class="search-box">
+                            <input type="text" id="buscarPesaje" class="form-control" placeholder="Buscar por patente...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="tblPesajes" class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Recibido</th>
+                                <th>Patente</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Peso Neto</th>
+                                <th>Proceso</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblPesajesBody">
+                            <!-- Datos cargados dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button id="btnAnterior" class="btn btn-pagination">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span id="paginacionInfo">Página 1 de 1</span>
+                    <button id="btnSiguiente" class="btn btn-pagination">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ver Detalle -->
+    <div id="modalVerDetalle" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalle del Pesaje API <span id="detalleId">#123</span></h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="detalleContenido">
+                    <!-- Contenido dinámico -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/pesaje_datos_iniciales.js"></script>
+    <script src="../../assets/js/api_pesajes.js"></script>
+</body>
+</html>
